@@ -39,3 +39,19 @@ class DonorProfile(models.Model):
 
     def __str__(self):
         return self.organization_name
+
+
+# ---------------- VOLUNTEER ---------------- #
+
+class VolunteerProfile(models.Model):
+    loginid = models.ForeignKey(Login, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    address = models.TextField()
+    availability = models.BooleanField(default=True)
+    status = models.CharField(max_length=30, default="pending")  # pending / approved / blocked
+    profile_pic = models.ImageField(upload_to="volunteer_profiles", null=True, blank=True)
+
+    def __str__(self):
+        return self.name
