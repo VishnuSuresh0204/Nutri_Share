@@ -55,3 +55,35 @@ class VolunteerProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+# ---------------- FOOD DONATION ---------------- #
+
+class FoodDonation(models.Model):
+    donor = models.ForeignKey(
+        DonorProfile,
+        on_delete=models.CASCADE
+    )
+
+    food_name = models.CharField(max_length=200)
+    food_type = models.CharField(max_length=100)
+
+    quantity = models.CharField(max_length=100)
+
+    description = models.TextField()
+
+    expiry_time = models.DateTimeField()
+
+    pickup_address = models.TextField()
+
+    donation_date = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    status = models.CharField(
+        max_length=50,
+        default="available"
+    )
+    # available / assigned / picked_up / delivered / cancelled
+
+    def __str__(self):
+        return self.food_name
