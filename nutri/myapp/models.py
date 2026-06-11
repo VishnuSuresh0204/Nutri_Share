@@ -9,3 +9,17 @@ class Login(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+# ---------------- BENEFICIARY(USER) ---------------- #
+
+class UserProfile(models.Model):
+    loginid = models.ForeignKey(Login, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    address = models.TextField()
+    profile_pic = models.ImageField(upload_to="user_profiles", null=True, blank=True)
+
+    def __str__(self):
+        return self.name
