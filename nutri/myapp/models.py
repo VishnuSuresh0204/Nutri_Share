@@ -149,3 +149,34 @@ class VolunteerAssignment(models.Model):
 
     def __str__(self):
         return f"{self.donation.food_name} - {self.volunteer.name}"
+
+# ---------------- FOOD DISTRIBUTION RECORD ---------------- #
+
+class DistributionRecord(models.Model):
+    donation = models.ForeignKey(
+        FoodDonation,
+        on_delete=models.CASCADE
+    )
+
+    beneficiary = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE
+    )
+
+    volunteer = models.ForeignKey(
+        VolunteerProfile,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+    distributed_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    remarks = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"{self.donation.food_name} -> {self.beneficiary.name}"
