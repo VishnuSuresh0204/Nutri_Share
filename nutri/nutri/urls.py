@@ -36,7 +36,8 @@ urlpatterns = [
     path('admin_volunteer_action/', views.admin_volunteer_action),
     path('admin_view_users/', views.admin_view_users),
     path('admin_view_complaints/', views.admin_view_complaints),
-    
+    path('admin_reply_complaint/', views.admin_reply_complaint),
+    path('admin_view_feedback/', views.admin_view_feedback),
     path('donor_home/', views.donor_home),
     path('volunteer_home/', views.volunteer_home),
     path('user_home/', views.user_home),
