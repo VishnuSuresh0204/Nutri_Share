@@ -29,6 +29,10 @@ urlpatterns = [
     path('register_volunteer/', views.register_volunteer),
     path('register_donor/', views.register_donor),
     path('register_volunteer/', views.register_volunteer),
+    path('admin_home/', views.admin_home),
+    path('donor_home/', views.donor_home),
+    path('volunteer_home/', views.volunteer_home),
+    path('user_home/', views.user_home),
     
 
 ]
