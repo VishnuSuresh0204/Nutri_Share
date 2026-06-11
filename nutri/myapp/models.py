@@ -87,3 +87,29 @@ class FoodDonation(models.Model):
 
     def __str__(self):
         return self.food_name
+
+# ---------------- FOOD REQUEST ---------------- #
+
+class FoodRequest(models.Model):
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE
+    )
+
+    donation = models.ForeignKey(
+        FoodDonation,
+        on_delete=models.CASCADE
+    )
+
+    request_date = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    status = models.CharField(
+        max_length=50,
+        default="pending"
+    )
+    # pending / approved / rejected / delivered
+
+    def __str__(self):
+        return f"{self.user.name} - {self.donation.food_name}"
