@@ -180,3 +180,22 @@ class DistributionRecord(models.Model):
 
     def __str__(self):
         return f"{self.donation.food_name} -> {self.beneficiary.name}"
+
+# ---------------- FEEDBACK ---------------- #
+
+class Feedback(models.Model):
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE
+    )
+
+    rating = models.IntegerField()
+
+    message = models.TextField()
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.user.name} - {self.rating}"
