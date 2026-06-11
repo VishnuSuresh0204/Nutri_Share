@@ -95,3 +95,66 @@ def register_user(request):
         return redirect("/login")
 
     return render(request, "user_register.html")
+
+def register_donor(request):
+    if request.method == "POST":
+
+        u = request.POST.get("username")
+        p = request.POST.get("password")
+
+        if Login.objects.filter(username=u).exists():
+            messages.error(request, "Username already exists")
+            return redirect("/register_donor")
+
+        l = Login.objects.create_user(
+            username=u,
+            password=p,
+            userType="donor",
+            viewPass=p
+        )
+
+        DonorProfile.objects.create(
+            loginid=l,
+            organization_name=request.POST.get("organization_name"),
+            donor_type=request.POST.get("donor_type"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            address=request.POST.get("address"),
+            logo=request.FILES.get("logo")
+        )
+
+        messages.success(request, "Registration submitted. Wait for admin approval.")
+        return redirect("/login")
+
+    return render(request, "donor_register.html")
+
+def register_volunteer(request):
+    if request.method == "POST":
+
+        u = request.POST.get("username")
+        p = request.POST.get("password")
+
+        if Login.objects.filter(username=u).exists():
+            messages.error(request, "Username already exists")
+            return redirect("/register_volunteer")
+
+        l = Login.objects.create_user(
+            username=u,
+            password=p,
+            userType="volunteer",
+            viewPass=p
+        )
+
+        VolunteerProfile.objects.create(
+            loginid=l,
+            name=request.POST.get("name"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            address=request.POST.get("address"),
+            profile_pic=request.FILES.get("profile_pic")
+        )
+
+        messages.success(request, "Registration submitted. Wait for admin approval.")
+        return redirect("/login")
+
+    return render(request, "volunteer_register.html")
