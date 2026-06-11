@@ -30,6 +30,13 @@ urlpatterns = [
     path('register_donor/', views.register_donor),
     path('register_volunteer/', views.register_volunteer),
     path('admin_home/', views.admin_home),
+    path('admin_view_donors/', views.admin_view_donors),
+    path('admin_donor_action/', views.admin_donor_action),
+    path('admin_view_volunteers/', views.admin_view_volunteers),
+    path('admin_volunteer_action/', views.admin_volunteer_action),
+    path('admin_view_users/', views.admin_view_users),
+    path('admin_view_complaints/', views.admin_view_complaints),
+    
     path('donor_home/', views.donor_home),
     path('volunteer_home/', views.volunteer_home),
     path('user_home/', views.user_home),
