@@ -202,7 +202,23 @@ def admin_view_complaints(request):
     return render(request, "ADMIN/view_complaints.html", {"val": c})
 
 
+def admin_reply_complaint(request):
+    id = request.GET.get("id")
 
+    c = Complaint.objects.get(id=id)
+
+    if request.method == "POST":
+        c.reply = request.POST.get("reply")
+        c.status = "replied"
+        c.save()
+
+        return redirect("/admin_view_complaints")
+
+    return render(request, "ADMIN/reply_complaint.html", {"c": c})
+
+def admin_view_feedback(request):
+    f = Feedback.objects.all().order_by("-created_at")
+    return render(request, "ADMIN/view_feedback.html", {"val": f})
 
 def donor_home(request):
     return render(request, "DONOR/donor_home.html")
