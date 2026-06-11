@@ -158,3 +158,17 @@ def register_volunteer(request):
         return redirect("/login")
 
     return render(request, "volunteer_register.html")
+
+
+def admin_home(request):
+    return render(request, "ADMIN/admin_home.html")
+
+def donor_home(request):
+    return render(request, "DONOR/donor_home.html")
+
+def volunteer_home(request):
+    return render(request, "VOLUNTEER/volunteer_home.html")
+
+def user_home(request):
+    return render(request, "USER/user_home.html")
+
