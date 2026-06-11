@@ -113,3 +113,39 @@ class FoodRequest(models.Model):
 
     def __str__(self):
         return f"{self.user.name} - {self.donation.food_name}"
+
+# ---------------- VOLUNTEER ASSIGNMENT ---------------- #
+
+class VolunteerAssignment(models.Model):
+    donation = models.ForeignKey(
+        FoodDonation,
+        on_delete=models.CASCADE
+    )
+
+    volunteer = models.ForeignKey(
+        VolunteerProfile,
+        on_delete=models.CASCADE
+    )
+
+    assigned_date = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    accepted = models.BooleanField(
+        null=True,
+        blank=True
+    )
+
+    pickup_status = models.CharField(
+        max_length=50,
+        default="pending"
+    )
+    # pending / collected / delivered
+
+    delivery_date = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"{self.donation.food_name} - {self.volunteer.name}"
