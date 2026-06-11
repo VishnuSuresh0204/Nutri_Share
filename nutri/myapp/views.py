@@ -163,6 +163,47 @@ def register_volunteer(request):
 def admin_home(request):
     return render(request, "ADMIN/admin_home.html")
 
+
+def admin_view_donors(request):
+    d = DonorProfile.objects.all()
+    return render(request, "ADMIN/view_donors.html", {"val": d})
+
+def admin_donor_action(request):
+    id = request.GET.get("id")
+    act = request.GET.get("act")
+
+    d = DonorProfile.objects.get(id=id)
+    d.status = act
+    d.save()
+
+    return redirect("/admin_view_donors")
+
+def admin_view_volunteers(request):
+    v = VolunteerProfile.objects.all()
+    return render(request, "ADMIN/view_volunteers.html", {"val": v})
+
+
+def admin_volunteer_action(request):
+    id = request.GET.get("id")
+    act = request.GET.get("act")
+
+    v = VolunteerProfile.objects.get(id=id)
+    v.status = act
+    v.save()
+
+    return redirect("/admin_view_volunteers")
+
+def admin_view_users(request):
+    u = UserProfile.objects.all()
+    return render(request, "ADMIN/view_users.html", {"val": u})
+
+def admin_view_complaints(request):
+    c = Complaint.objects.all().order_by("-created_at")
+    return render(request, "ADMIN/view_complaints.html", {"val": c})
+
+
+
+
 def donor_home(request):
     return render(request, "DONOR/donor_home.html")
 
