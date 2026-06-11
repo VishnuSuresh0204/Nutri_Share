@@ -66,3 +66,32 @@ def signout(request):
     logout(request)
     return redirect("/")
 
+def register_user(request):
+    if request.method == "POST":
+        u = request.POST.get("username")
+        p = request.POST.get("password")
+
+        if Login.objects.filter(username=u).exists():
+            messages.error(request, "Username already exists")
+            return redirect("/register_user")
+
+        l = Login.objects.create_user(
+            username=u,
+            password=p,
+            userType="user",
+            viewPass=p
+        )
+
+        UserProfile.objects.create(
+            loginid=l,
+            name=request.POST.get("name"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            address=request.POST.get("address"),
+            profile_pic=request.FILES.get("profile_pic")
+        )
+
+        messages.success(request, "Registration Successful")
+        return redirect("/login")
+
+    return render(request, "user_register.html")
