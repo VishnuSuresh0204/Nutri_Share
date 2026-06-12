@@ -1,0 +1,36 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}Share Feedback - NutriShare{% endblock %}
+{% block header_title %}Share Your Feedback{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h3 class="form-title">Rate Our Service</h3>
+    <p class="form-subtitle">Your reviews help us evaluate and improve food collection standards and driver coordination.</p>
+    
+    <form action="/user_add_feedback/" method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="rating">Star Rating</label>
+            <select id="rating" name="rating" class="form-control" required>
+                <option value="" disabled selected>Select rating...</option>
+                <option value="5">★★★★★ - Excellent Experience</option>
+                <option value="4">★★★★☆ - Very Good</option>
+                <option value="3">★★★☆☆ - Average / Satisfactory</option>
+                <option value="2">★★☆☆☆ - Below Average</option>
+                <option value="1">★☆☆☆☆ - Poor Service</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="message">Your Review Comments</label>
+            <textarea id="message" name="message" class="form-control" style="min-height: 150px;" placeholder="What did you think of the food freshness, safety checks, or courier timing? Write here..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">
+            <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+        </button>
+    </form>
+</div>
+{% endblock %}
