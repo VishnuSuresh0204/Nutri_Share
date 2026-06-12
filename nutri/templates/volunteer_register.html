@@ -1,0 +1,59 @@
+{% extends "commen.html" %}
+
+{% block title %}Register as Volunteer - NutriShare{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2 class="form-title">Volunteer Registration</h2>
+    <p class="form-subtitle">Join our network of drivers and helpers to redistribute surplus food</p>
+    
+    <form action="/register_volunteer/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Choose a unique username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+        </div>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border-color-light); margin: 1.5rem 0;">
+        
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="example@email.com" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. +1234567890" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Residential Address</label>
+            <textarea id="address" name="address" class="form-control" placeholder="Provide details of your general location or address" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="profile_pic">Profile Picture</label>
+            <input type="file" id="profile_pic" name="profile_pic" class="form-control" accept="image/*">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">
+            <i class="fa-solid fa-truck-ramp-box"></i> Register as Volunteer
+        </button>
+    </form>
+    
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-secondary-light);">
+        Already have an account? <a href="/login" style="font-weight: 600; color: var(--primary-color);">Login here</a>
+    </div>
+</div>
+{% endblock %}

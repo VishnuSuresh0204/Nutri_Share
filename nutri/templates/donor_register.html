@@ -1,0 +1,70 @@
+{% extends "commen.html" %}
+
+{% block title %}Register as Donor - NutriShare{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2 class="form-title">Donor Registration</h2>
+    <p class="form-subtitle">Register your business, restaurant, or home to share excess food</p>
+    
+    <form action="/register_donor/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Choose a unique username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+        </div>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border-color-light); margin: 1.5rem 0;">
+        
+        <div class="form-group">
+            <label for="organization_name">Organization / Business Name</label>
+            <input type="text" id="organization_name" name="organization_name" class="form-control" placeholder="e.g. Green Tree Bistro" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="donor_type">Donor Type</label>
+            <select id="donor_type" name="donor_type" class="form-control" required>
+                <option value="" disabled selected>Select Organization Type</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Supermarket">Supermarket</option>
+                <option value="Household">Household</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="contact@organization.com" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. +1234567890" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Pickup Address</label>
+            <textarea id="address" name="address" class="form-control" placeholder="Provide complete address for volunteer pickup" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="logo">Organization Logo / Image</label>
+            <input type="file" id="logo" name="logo" class="form-control" accept="image/*">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">
+            <i class="fa-solid fa-hand-holding-heart"></i> Register Organization
+        </button>
+    </form>
+    
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-secondary-light);">
+        Already have an account? <a href="/login" style="font-weight: 600; color: var(--primary-color);">Login here</a>
+    </div>
+</div>
+{% endblock %}
