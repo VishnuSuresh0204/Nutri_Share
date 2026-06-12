@@ -1,0 +1,66 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}My Requests - NutriShare{% endblock %}
+{% block header_title %}My Food Requests{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Request Date</th>
+                <th>Food Item</th>
+                <th>Donor Partner</th>
+                <th>Request Status</th>
+                <th>Estimated Delivery / Courier</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>{{ i.request_date|date:"M d, Y g:i A" }}</td>
+                <td>
+                    <strong style="color: var(--text-primary-light);">{{ i.donation.food_name }}</strong><br>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary-light);">Quantity: {{ i.donation.quantity }}</span>
+                </td>
+                <td>{{ i.donation.donor.organization_name }}</td>
+                <td>
+                    <span class="badge badge-{{ i.status }}">{{ i.status }}</span>
+                </td>
+                <td>
+                    {% if i.status == 'approved' or i.status == 'delivered' %}
+                    <span style="font-size: 0.9rem; color: var(--primary-color);">
+                        <i class="fa-solid fa-truck"></i> Assigned to Courier
+                    </span>
+                    {% else %}
+                    <span style="color: var(--text-secondary-light); font-size: 0.9rem; font-style: italic;">Awaiting Courier matching</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <!-- Mock values for template layout check -->
+            <tr>
+                <td>June 12, 2026, 3:30 PM</td>
+                <td>
+                    <strong style="color: var(--text-primary-light);">Chocolate Croissants</strong><br>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary-light);">Quantity: 15 pieces</span>
+                </td>
+                <td>Delicious Bakery</td>
+                <td><span class="badge badge-pending">pending</span></td>
+                <td><span style="color: var(--text-secondary-light); font-size: 0.9rem; font-style: italic;">Awaiting Approval</span></td>
+            </tr>
+            <tr>
+                <td>June 11, 2026, 10:45 AM</td>
+                <td>
+                    <strong style="color: var(--text-primary-light);">Fresh Apples & Bananas</strong><br>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary-light);">Quantity: 10 Kg</span>
+                </td>
+                <td>Organics Market</td>
+                <td><span class="badge badge-delivered">delivered</span></td>
+                <td><span style="color: var(--primary-color); font-size: 0.9rem;"><i class="fa-solid fa-check-double"></i> Delivered by John Doe</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
