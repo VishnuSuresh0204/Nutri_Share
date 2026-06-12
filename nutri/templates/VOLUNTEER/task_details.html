@@ -1,0 +1,105 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}Task Details - Volunteer Portal{% endblock %}
+{% block header_title %}Task Detail View{% endblock %}
+
+{% block content %}
+<div class="profile-card" style="max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color-light); padding-bottom: 1.5rem;">
+        <div>
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--text-primary-light);">Task ID: #{{ task.id|default:"1" }}</h3>
+            <p style="color: var(--text-secondary-light);">Assigned on: {{ task.assigned_date|default:"June 12, 2026" }}</p>
+        </div>
+        <div>
+            <span class="badge badge-{{ task.pickup_status|default:'pending' }}" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">{{ task.pickup_status|default:"pending" }}</span>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+        <!-- Donation Information -->
+        <div style="grid-column: 1 / -1; background-color: var(--bg-light); border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem;">
+            <h4 style="font-family: 'Outfit', sans-serif; color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-utensils"></i> Food Donation Details</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div class="profile-field">
+                    <div class="profile-field-label">Food Title</div>
+                    <div class="profile-field-val">{{ task.donation.food_name|default:"Mixed Bakery Pastries" }}</div>
+                </div>
+                <div class="profile-field">
+                    <div class="profile-field-label">Quantity</div>
+                    <div class="profile-field-val">{{ task.donation.quantity|default:"10 packs" }}</div>
+                </div>
+                <div class="profile-field">
+                    <div class="profile-field-label">Best Before / Expiry</div>
+                    <div class="profile-field-val" style="color: hsl(0, 75%, 45%); font-weight: 500;">{{ task.donation.expiry_time|default:"Today, 8:00 PM" }}</div>
+                </div>
+                <div class="profile-field">
+                    <div class="profile-field-label">Category</div>
+                    <div class="profile-field-val">{{ task.donation.food_type|default:"Bakery / Dessert" }}</div>
+                </div>
+            </div>
+            <div class="profile-field" style="margin-top: 1rem; border-top: 1px solid var(--border-color-light); padding-top: 1rem;">
+                <div class="profile-field-label">Description</div>
+                <div class="profile-field-val" style="font-size: 0.95rem; line-height: 1.5; color: var(--text-secondary-light);">{{ task.donation.description|default:"Assorted muffins and croissants packaged in plastic wrap." }}</div>
+            </div>
+        </div>
+
+        <!-- Donor Information -->
+        <div style="background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 1.5rem;">
+            <h4 style="font-family: 'Outfit', sans-serif; color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-hotel"></i> Donor Pick-up Point</h4>
+            <div class="profile-field">
+                <div class="profile-field-label">Organization Name</div>
+                <div class="profile-field-val"><strong>{{ task.donation.donor.organization_name|default:"Delicious Bakery" }}</strong></div>
+            </div>
+            <div class="profile-field">
+                <div class="profile-field-label">Phone Contact</div>
+                <div class="profile-field-val"><i class="fa-solid fa-phone" style="font-size: 0.85rem; color: var(--text-secondary-light);"></i> {{ task.donation.donor.phone|default:"+1 555-0199" }}</div>
+            </div>
+            <div class="profile-field">
+                <div class="profile-field-label">Collection Location</div>
+                <div class="profile-field-val" style="font-size: 0.9rem; line-height: 1.4; color: var(--text-secondary-light);">{{ task.donation.pickup_address|default:"123 Baker St, Suite A" }}</div>
+            </div>
+        </div>
+
+        <!-- Delivery Destination Information -->
+        <div style="background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 1.5rem;">
+            <h4 style="font-family: 'Outfit', sans-serif; color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-map-location-dot"></i> Beneficiary Drop-off Point</h4>
+            <div class="profile-field">
+                <div class="profile-field-label">Recipient Entity</div>
+                <div class="profile-field-val"><strong>{{ recipient.name|default:"Community Soup Kitchen / Shelter" }}</strong></div>
+            </div>
+            <div class="profile-field">
+                <div class="profile-field-label">Phone Contact</div>
+                <div class="profile-field-val"><i class="fa-solid fa-phone" style="font-size: 0.85rem; color: var(--text-secondary-light);"></i> {{ recipient.phone|default:"+1 555-9080" }}</div>
+            </div>
+            <div class="profile-field">
+                <div class="profile-field-label">Delivery Address</div>
+                <div class="profile-field-val" style="font-size: 0.9rem; line-height: 1.4; color: var(--text-secondary-light);">{{ recipient.address|default:"Downtown shelter house, 789 Hope Rd" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions block -->
+    <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; border-top: 1px solid var(--border-color-light); padding-top: 2rem;">
+        <a href="/volunteer_view_tasks" class="btn btn-secondary"><i class="fa-solid fa-chevron-left"></i> Back to Task Board</a>
+        
+        {% if task.accepted == None %}
+        <a href="/volunteer_accept_task?id={{ task.id|default:'1' }}" class="btn btn-success">
+            <i class="fa-solid fa-check"></i> Accept Task
+        </a>
+        <a href="/volunteer_reject_task?id={{ task.id|default:'1' }}" class="btn btn-danger" onclick="return confirm('Reject this task?');">
+            <i class="fa-solid fa-xmark"></i> Reject Task
+        </a>
+        {% elif task.accepted == True %}
+            {% if task.pickup_status == 'pending' %}
+            <a href="/volunteer_update_status?id={{ task.id|default:'1' }}&status=collected" class="btn btn-primary">
+                <i class="fa-solid fa-truck-ramp-box"></i> Mark as Collected
+            </a>
+            {% elif task.pickup_status == 'collected' %}
+            <a href="/volunteer_update_status?id={{ task.id|default:'1' }}&status=delivered" class="btn btn-success">
+                <i class="fa-solid fa-house-chimney-user"></i> Mark as Delivered
+            </a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
