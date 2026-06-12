@@ -1,0 +1,57 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}Task History - Volunteer Portal{% endblock %}
+{% block header_title %}Task History Log{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Task ID</th>
+                <th>Donated Item</th>
+                <th>Donor Partner</th>
+                <th>Beneficiary (User)</th>
+                <th>Delivery Completed On</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>#{{ i.id }}</td>
+                <td><strong>{{ i.donation.food_name }}</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">Qty: {{ i.donation.quantity }}</span></td>
+                <td>{{ i.donation.donor.organization_name }}</td>
+                <td>{{ i.donation.foodrequest_set.first.user.name|default:"General Distribution" }}</td>
+                <td>{{ i.delivery_date|date:"M d, Y g:i A"|default:"Recently completed" }}</td>
+                <td>
+                    <span class="badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span>
+                </td>
+            </tr>
+            {% empty %}
+            <!-- Mock values for template review -->
+            <tr>
+                <td>#1042</td>
+                <td><strong>15 Chocolate Croissants</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">Qty: 15 pieces</span></td>
+                <td>Delicious Bakery</td>
+                <td>Downtown Shelter</td>
+                <td>June 12, 2026, 4:15 PM</td>
+                <td>
+                    <span class="badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span>
+                </td>
+            </tr>
+            <tr>
+                <td>#1031</td>
+                <td><strong>Fresh Apples & Bananas</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">Qty: 10 Kg</span></td>
+                <td>Organics Market</td>
+                <td>St. Jude Refuge</td>
+                <td>June 11, 2026, 11:30 AM</td>
+                <td>
+                    <span class="badge badge-delivered"><i class="fa-solid fa-circle-check"></i> Delivered</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
