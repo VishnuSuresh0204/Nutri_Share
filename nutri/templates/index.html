@@ -1,0 +1,79 @@
+{% extends "commen.html" %}
+
+{% block title %}Welcome to NutriShare - Stop Waste, Share Nourishment{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Connecting <span>Surplus Food</span> to Communities in Need</h1>
+        <p class="hero-subtitle">NutriShare makes it easy for local restaurants, supermarkets, and hotels to share edible excess food with verified beneficiaries and volunteers who deliver the hope.</p>
+        <div class="hero-btns">
+            <a href="/login" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Get Started</a>
+            <a href="/register_donor" class="btn btn-secondary"><i class="fa-solid fa-hand-holding-heart"></i> Donate Food</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <!-- Generates beautiful food sharing vector-like image placeholder effect -->
+        <div style="background: linear-gradient(135deg, hsl(142, 60%, 85%), hsl(142, 40%, 75%)); width: 100%; min-width: 350px; height: 350px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg);">
+            <i class="fa-solid fa-people-carry-box" style="font-size: 8rem; color: var(--primary-color);"></i>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Grid -->
+<div class="dashboard-grid" style="margin-top: 3rem; margin-bottom: 5rem;">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-utensils"></i></div>
+        <div class="stat-details">
+            <h3>2.4 Tons</h3>
+            <p>Food Shared</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-hands-holding"></i></div>
+        <div class="stat-details">
+            <h3>150+</h3>
+            <p>Active Donors</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+        <div class="stat-details">
+            <h3>400+</h3>
+            <p>Deliveries Completed</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-user-group"></i></div>
+        <div class="stat-details">
+            <h3>1,200+</h3>
+            <p>Lives Impacted</p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="section" style="background-color: white; border-radius: var(--radius-lg); padding: 4rem 2rem; border: 1px solid var(--border-color-light);">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">A seamless workflow connecting donors, volunteers, and users to combat food waste and support hunger alleviation.</p>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-hotel"></i></div>
+            <h3 class="feature-title">Donors List Surplus</h3>
+            <p class="feature-desc">Restaurants, supermarkets, and hotels log fresh surplus meals, shelf-stable goods, or bakery excess before expiry.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
+            <h3 class="feature-title">Volunteers Mobilize</h3>
+            <p class="feature-desc">Local volunteers accept delivery notifications, pick up food packages directly, and perform quick temperature checks.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h3 class="feature-title">Users Receive Food</h3>
+            <p class="feature-desc">Registered, verified individuals or shelters claim food packages and receive updates once volunteers are en route.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
