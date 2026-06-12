@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NutriShare - Food Redistribution Platform{% endblock %}</title>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Local Premium Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="public-body">
+    <!-- Public Navbar -->
+    <nav class="public-navbar">
+        <a href="/" class="logo-container">
+            <i class="fa-solid fa-hand-holding-heart logo-icon"></i>
+            <span class="logo-text">NutriShare</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a></li>
+            <li><a href="/login" class="nav-link {% if request.path == '/login/' or request.path == '/login' %}active{% endif %}">Login</a></li>
+            <li style="position: relative;" class="dropdown-trigger">
+                <a href="#" class="nav-link" id="registerDropdownBtn">Register <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                <div class="dropdown-menu" id="registerDropdown" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); min-width: 180px; z-index: 110; margin-top: 0.5rem; flex-direction: column;">
+                    <a href="/register_user" style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color-light); display: block; color: var(--text-primary-light);">Beneficiary (User)</a>
+                    <a href="/register_donor" style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color-light); display: block; color: var(--text-primary-light);">Donor Organization</a>
+                    <a href="/register_volunteer" style="padding: 0.75rem 1rem; display: block; color: var(--text-primary-light);">Volunteer</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="public-main">
+        <!-- Messages/Alerts framework -->
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                <span><i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}" style="margin-right: 0.5rem;"></i> {{ message }}</span>
+                <span class="alert-close" onclick="this.parentElement.style.display='none'">&times;</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Public Footer -->
+    <footer class="public-footer">
+        <p>&copy; 2026 NutriShare. All rights reserved. Connecting surplus food with those in need.</p>
+    </footer>
+
+    <!-- Dropdown Script -->
+    <script>
+        const dropdownBtn = document.getElementById('registerDropdownBtn');
+        const dropdownMenu = document.getElementById('registerDropdown');
+
+        if (dropdownBtn && dropdownMenu) {
+            dropdownBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+                    dropdownMenu.style.display = 'flex';
+                } else {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown-trigger')) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
