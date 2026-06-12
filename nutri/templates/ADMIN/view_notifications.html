@@ -1,0 +1,40 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}View Notifications - Admin{% endblock %}
+{% block header_title %}Sent System Notifications{% endblock %}
+
+{% block content %}
+<div class="notification-list">
+    {% for i in val %}
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-bullhorn" style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ i.title }}</span>
+            <span style="font-size: 0.8rem; color: var(--text-secondary-light);">
+                Target: <span class="badge badge-assigned">{{ i.target_role }}</span> | Sent: {{ i.created_at }}
+            </span>
+        </div>
+        <p class="notification-message" style="margin-top: 0.5rem; line-height: 1.5;">{{ i.message }}</p>
+    </div>
+    {% empty %}
+    <!-- Mock values for template review -->
+    <div class="notification-item" style="border-left-color: hsl(210, 80%, 45%);">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-bullhorn" style="color: hsl(210, 80%, 45%); margin-right: 0.5rem;"></i> System Upgrade Scheduled</span>
+            <span style="font-size: 0.8rem; color: var(--text-secondary-light);">
+                Target: <span class="badge badge-assigned">all</span> | Sent: June 12, 2026, 10:00 AM
+            </span>
+        </div>
+        <p class="notification-message" style="margin-top: 0.5rem; line-height: 1.5;">NutriShare portals will be undergoing regular system enhancements on Sunday, June 14, 2026, from 2:00 AM to 4:00 AM. Please save any active posts or task claims prior to this window.</p>
+    </div>
+    <div class="notification-item" style="border-left-color: hsl(35, 90%, 45%);">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-circle-exclamation" style="color: hsl(35, 90%, 45%); margin-right: 0.5rem;"></i> Verification Reminder</span>
+            <span style="font-size: 0.8rem; color: var(--text-secondary-light);">
+                Target: <span class="badge badge-assigned">donor</span> | Sent: June 11, 2026, 3:30 PM
+            </span>
+        </div>
+        <p class="notification-message" style="margin-top: 0.5rem; line-height: 1.5;">Please ensure organization logos are uploaded clearly. Accounts missing business identification documents may experience delay in donation publishing approvals.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
