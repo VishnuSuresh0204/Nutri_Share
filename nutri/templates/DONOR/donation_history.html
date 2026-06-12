@@ -1,0 +1,42 @@
+{% extends "DONOR/commen.html" %}
+
+{% block title %}Donation History - Donor Portal{% endblock %}
+{% block header_title %}Donation History{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Date Listed</th>
+                <th>Food Item</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Resolved Status</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>{{ i.donation_date|date:"M d, Y g:i A" }}</td>
+                <td><strong style="color: var(--text-primary-light);">{{ i.food_name }}</strong></td>
+                <td>{{ i.food_type }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>
+                    <span class="badge badge-{{ i.status }}">{{ i.status }}</span>
+                </td>
+                <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary-light);">{{ i.description }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-secondary-light); padding: 3rem;">
+                    <i class="fa-solid fa-clock-rotate-left" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+                    No donation history recorded.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
