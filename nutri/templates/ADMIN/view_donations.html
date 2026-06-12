@@ -1,0 +1,75 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}View Food Donations - Admin{% endblock %}
+{% block header_title %}Surplus Food Donations{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Donor</th>
+                <th>Food Item</th>
+                <th>Category / Type</th>
+                <th>Quantity</th>
+                <th>Expiry Date & Time</th>
+                <th>Pickup Address</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td><strong>{{ i.donor.organization_name }}</strong></td>
+                <td>{{ i.food_name }}</td>
+                <td>{{ i.food_type }}</td>
+                <td>{{ i.quantity }}</td>
+                <td><span style="color: hsl(0, 75%, 45%); font-weight: 500;">{{ i.expiry_time }}</span></td>
+                <td style="max-width: 200px; font-size: 0.85rem;">{{ i.pickup_address }}</td>
+                <td>
+                    <span class="badge badge-{{ i.status }}">{{ i.status }}</span>
+                </td>
+                <td>
+                    {% if i.status == 'available' %}
+                    <a href="/admin_assign_volunteer?did={{ i.id }}" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-user-tag"></i> Assign Volunteer
+                    </a>
+                    {% else %}
+                    <span style="color: var(--text-secondary-light); font-size: 0.85rem;">Assigned / Closed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <!-- Mock data when val is empty so the template compiles and can be reviewed visually -->
+            <tr>
+                <td><strong>Delicious Bakery</strong></td>
+                <td>Chocolate Croissants</td>
+                <td>Bakery / Bread</td>
+                <td>15 pieces</td>
+                <td><span style="color: hsl(35, 90%, 40%); font-weight: 500;">Today at 8:00 PM</span></td>
+                <td>123 Baker St</td>
+                <td><span class="badge badge-available">available</span></td>
+                <td>
+                    <a href="/admin_assign_volunteer?did=1" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-user-tag"></i> Assign Volunteer
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Organics Market</strong></td>
+                <td>Fresh Apples & Bananas</td>
+                <td>Fruits</td>
+                <td>10 Kg</td>
+                <td><span style="color: hsl(142, 60%, 30%); font-weight: 500;">Tomorrow at 4:00 PM</span></td>
+                <td>456 Green Ln</td>
+                <td><span class="badge badge-assigned">assigned</span></td>
+                <td>
+                    <span style="color: var(--text-secondary-light); font-size: 0.85rem;">Assigned / Closed</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
