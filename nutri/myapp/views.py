@@ -220,11 +220,132 @@ def admin_view_feedback(request):
     f = Feedback.objects.all().order_by("-created_at")
     return render(request, "ADMIN/view_feedback.html", {"val": f})
 
+
+
 def donor_home(request):
     return render(request, "DONOR/donor_home.html")
 
+
+def donor_add_donation(request):
+
+    donor = DonorProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    if request.method == "POST":
+
+        FoodDonation.objects.create(
+            donor=donor,
+            food_name=request.POST.get("food_name"),
+            food_type=request.POST.get("food_type"),
+            quantity=request.POST.get("quantity"),
+            description=request.POST.get("description"),
+            expiry_time=request.POST.get("expiry_time"),
+            pickup_address=request.POST.get("pickup_address")
+        )
+
+        messages.success(request, "Donation Added")
+        return redirect("/donor_view_donations")
+
+    return render(request, "DONOR/add_donation.html")
+
+
+def donor_add_donation(request):
+
+    donor = DonorProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    if request.method == "POST":
+
+        FoodDonation.objects.create(
+            donor=donor,
+            food_name=request.POST.get("food_name"),
+            food_type=request.POST.get("food_type"),
+            quantity=request.POST.get("quantity"),
+            description=request.POST.get("description"),
+            expiry_time=request.POST.get("expiry_time"),
+            pickup_address=request.POST.get("pickup_address")
+        )
+
+        messages.success(request, "Donation Added")
+        return redirect("/donor_view_donations")
+
+    return render(request, "DONOR/add_donation.html")
+
+def donor_view_donations(request):
+
+    donor = DonorProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    d = FoodDonation.objects.filter(donor=donor)
+
+    return render(request,
+                  "DONOR/view_donations.html",
+                  {"val": d})
+
+def donor_delete_donation(request):
+    id = request.GET.get("id")
+
+    FoodDonation.objects.filter(id=id).delete()
+
+    return redirect("/donor_view_donations")
+def donor_donation_history(request):
+
+    donor = DonorProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    d = FoodDonation.objects.filter(
+        donor=donor
+    ).order_by("-donation_date")
+
+    return render(request,
+                  "DONOR/donation_history.html",
+                  {"val": d})
+
+
+
 def volunteer_home(request):
     return render(request, "VOLUNTEER/volunteer_home.html")
+
+
+def volunteer_view_tasks(request):
+
+    v = VolunteerProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    tasks = VolunteerAssignment.objects.filter(
+        volunteer=v
+    )
+
+    return render(request,
+                  "VOLUNTEER/view_tasks.html",
+                  {"val": tasks})
+
+def volunteer_accept_task(request):
+
+    id = request.GET.get("id")
+
+    a = VolunteerAssignment.objects.get(id=id)
+
+    a.accepted = True
+    a.save()
+
+    return redirect("/volunteer_view_tasks")
+
+def volunteer_reject_task(request):
+
+    id = request.GET.get("id")
+
+    a = VolunteerAssignment.objects.get(id=id)
+
+    a.accepted = False
+    a.save()
+
+    return redirect("/volunteer_view_tasks")
 
 def user_home(request):
     return render(request, "USER/user_home.html")
