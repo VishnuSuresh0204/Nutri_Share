@@ -462,3 +462,14 @@ def user_add_complaint(request):
     return render(request, "USER/add_complaint.html")
 
 
+def user_view_complaints(request):
+
+    user = UserProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    c = Complaint.objects.filter(user=user)
+
+    return render(request,
+                  "USER/view_complaints.html",
+                  {"val": c})
