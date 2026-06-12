@@ -1,0 +1,46 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}Manage Users - Admin{% endblock %}
+{% block header_title %}Registered Beneficiaries (Users){% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Profile Pic</th>
+                <th>Name</th>
+                <th>Email Address</th>
+                <th>Phone Number</th>
+                <th>Delivery Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>
+                    {% if i.profile_pic %}
+                    <img src="{{ i.profile_pic.url }}" alt="Profile Pic" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%; border: 1.5px solid var(--primary-color);">
+                    {% else %}
+                    <div style="width: 45px; height: 45px; background-color: hsl(280, 20%, 90%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-secondary-light);">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    {% endif %}
+                </td>
+                <td><strong style="color: var(--text-primary-light);">{{ i.name }}</strong></td>
+                <td>{{ i.email }}</td>
+                <td>{{ i.phone }}</td>
+                <td style="max-width: 350px; font-size: 0.9rem; color: var(--text-secondary-light);">{{ i.address }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-secondary-light); padding: 3rem;">
+                    <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+                    No users found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
