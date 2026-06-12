@@ -1,0 +1,47 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}Distribution Records - Admin{% endblock %}
+{% block header_title %}Distribution Logs{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Donation Item</th>
+                <th>Beneficiary (User)</th>
+                <th>Courier (Volunteer)</th>
+                <th>Distribution Date</th>
+                <th>Remarks / Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td><strong>{{ i.donation.food_name }}</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">Donor: {{ i.donation.donor.organization_name }}</span></td>
+                <td>{{ i.beneficiary.name }}<br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">{{ i.beneficiary.phone }}</span></td>
+                <td>{{ i.volunteer.name|default:"Self-pickup / None" }}</td>
+                <td>{{ i.distributed_at }}</td>
+                <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary-light);">{{ i.remarks|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <!-- Mock data for review purposes -->
+            <tr>
+                <td><strong>15 Croissants</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">Donor: Delicious Bakery</span></td>
+                <td>Downtown Shelter<br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">+1 555-9080</span></td>
+                <td>John Doe</td>
+                <td>June 12, 2026, 4:15 PM</td>
+                <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary-light);">Delivered fresh in thermal insulated carrier box.</td>
+            </tr>
+            <tr>
+                <td><strong>10 Kg Fruits</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">Donor: Organics Market</span></td>
+                <td>St. Jude Refuge<br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">+1 555-1211</span></td>
+                <td>Jane Smith</td>
+                <td>June 11, 2026, 11:30 AM</td>
+                <td style="max-width: 300px; font-size: 0.85rem; color: var(--text-secondary-light);">All items checked for freshness. Remarks: beneficiary highly appreciative.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
