@@ -1,0 +1,53 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}Volunteer Dashboard - Home{% endblock %}
+{% block header_title %}Overview Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Active Tasks Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-list-check" style="color: hsl(210, 80%, 45%);"></i></div>
+        <div class="stat-details">
+            <h3>My Tasks</h3>
+            <p>Active claims</p>
+        </div>
+        <a href="/volunteer_view_tasks" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Completed Deliveries Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-circle-check" style="color: hsl(142, 60%, 40%);"></i></div>
+        <div class="stat-details">
+            <h3>History</h3>
+            <p>Completed deliveries</p>
+        </div>
+        <a href="/volunteer_task_history" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Availability Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-circle-user" style="color: var(--primary-color);"></i></div>
+        <div class="stat-details">
+            <h3>Status</h3>
+            <p>
+                {% if request.user.volunteerprofile_set.first.availability %}
+                Active / Available
+                {% else %}
+                On Break / Busy
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+
+<div style="background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm); margin-top: 2rem;">
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--text-primary-light);">Your Volunteer Impact</h3>
+    <p style="color: var(--text-secondary-light); line-height: 1.6; margin-bottom: 1.5rem;">By collecting surplus food and transporting it to community centres and shelter houses, you reduce landfill methane emissions and provide direct relief to hungry families.</p>
+    
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="/volunteer_view_tasks" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass-location"></i> View My Active Assignments</a>
+        <a href="/volunteer_notifications" class="btn btn-secondary"><i class="fa-solid fa-bell"></i> General Announcements</a>
+    </div>
+</div>
+{% endblock %}
