@@ -1,0 +1,59 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}Admin Dashboard - Home{% endblock %}
+{% block header_title %}System Overview{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Donors Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-hotel" style="color: hsl(142, 72%, 29%);"></i></div>
+        <div class="stat-details">
+            <h3>Manage</h3>
+            <p>Donor Approvals</p>
+        </div>
+        <a href="/admin_view_donors" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Volunteers Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-truck-ramp-box" style="color: hsl(210, 80%, 45%);"></i></div>
+        <div class="stat-details">
+            <h3>Manage</h3>
+            <p>Volunteer Status</p>
+        </div>
+        <a href="/admin_view_volunteers" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Users Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-user-group" style="color: hsl(280, 70%, 50%);"></i></div>
+        <div class="stat-details">
+            <h3>Manage</h3>
+            <p>Beneficiaries</p>
+        </div>
+        <a href="/admin_view_users" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Feedback / Complaints Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-circle-exclamation" style="color: hsl(0, 75%, 50%);"></i></div>
+        <div class="stat-details">
+            <h3>Manage</h3>
+            <p>Complaints</p>
+        </div>
+        <a href="/admin_view_complaints" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+</div>
+
+<div style="background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm); margin-top: 2rem;">
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-primary-light);"><i class="fa-solid fa-circle-info" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Administrator Quick Actions</h3>
+    <p style="color: var(--text-secondary-light); margin-bottom: 1.5rem;">As an administrator, you have complete authority over portal profiles, verification workflows, notification broadcasts, and resolving complaints.</p>
+    
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="/admin_send_notification" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Broadcast Notification</a>
+        <a href="/admin_view_donations" class="btn btn-secondary"><i class="fa-solid fa-utensils"></i> View Food Logs</a>
+        <a href="/admin_view_feedback" class="btn btn-secondary"><i class="fa-solid fa-star"></i> Check Ratings</a>
+    </div>
+</div>
+{% endblock %}
