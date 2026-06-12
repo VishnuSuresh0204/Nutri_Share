@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Donor Dashboard - NutriShare{% endblock %}</title>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Local Premium Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="/donor_home" class="logo-container" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fa-solid fa-hand-holding-heart logo-icon" style="color: hsl(142, 60%, 55%);"></i>
+                <span class="logo-text">NutriShare</span>
+            </a>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="/donor_home" class="sidebar-link {% if '/donor_home' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-chart-pie"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/donor_add_donation" class="sidebar-link {% if '/donor_add_donation' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-circle-plus"></i> Add Donation
+                    </a>
+                </li>
+                <li>
+                    <a href="/donor_view_donations" class="sidebar-link {% if '/donor_view_donations' in request.path or '/donor_delete_donation' in request.path or '/donor_edit_donation' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-utensils"></i> Active Donations
+                    </a>
+                </li>
+                <li>
+                    <a href="/donor_donation_history" class="sidebar-link {% if '/donor_donation_history' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Donation History
+                    </a>
+                </li>
+                <li>
+                    <a href="/donor_track_donation" class="sidebar-link {% if '/donor_track_donation' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-route"></i> Track Deliveries
+                    </a>
+                </li>
+                <li>
+                    <a href="/donor_notifications" class="sidebar-link {% if '/donor_notifications' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-bell"></i> Announcements
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <a href="/logout" class="sidebar-link logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard View -->
+        <main class="dashboard-main">
+            <!-- Header bar -->
+            <header class="dashboard-header">
+                <div>
+                    <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary-light);">{% block header_title %}Donor Portal{% endblock %}</h2>
+                </div>
+                
+                <div class="user-profile-widget">
+                    {% if request.user.donorprofile_set.first.logo %}
+                    <img src="{{ request.user.donorprofile_set.first.logo.url }}" alt="Logo" class="user-avatar">
+                    {% else %}
+                    <div style="background-color: var(--primary-color); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">
+                        <i class="fa-solid fa-hotel"></i>
+                    </div>
+                    {% endif %}
+                    <div class="user-details">
+                        <span class="user-name">{{ request.user.donorprofile_set.first.organization_name|default:request.user.username }}</span>
+                        <span class="user-role">Donor Partner</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Inner Page Content -->
+            <div class="dashboard-content">
+                <!-- Django Messages framework -->
+                {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                        <span><i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}" style="margin-right: 0.5rem;"></i> {{ message }}</span>
+                        <span class="alert-close" onclick="this.parentElement.style.display='none'">&times;</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
