@@ -38,8 +38,18 @@ urlpatterns = [
     path('admin_view_complaints/', views.admin_view_complaints),
     path('admin_reply_complaint/', views.admin_reply_complaint),
     path('admin_view_feedback/', views.admin_view_feedback),
+   
     path('donor_home/', views.donor_home),
+    path('donor_add_donation/', views.donor_add_donation),
+    path('donor_view_donations/', views.donor_view_donations),
+    path('donor_delete_donation/', views.donor_delete_donation),
+    path('donor_donation_history/', views.donor_donation_history),
+    
     path('volunteer_home/', views.volunteer_home),
+    path('volunteer_view_tasks/', views.volunteer_view_tasks),
+    path('volunteer_accept_task/', views.volunteer_accept_task),
+    path('volunteer_reject_task/', views.volunteer_reject_task),
+
     path('user_home/', views.user_home),
     
 
