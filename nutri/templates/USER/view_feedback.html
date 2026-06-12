@@ -1,0 +1,66 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}My Feedback History - NutriShare{% endblock %}
+{% block header_title %}My Feedback Reviews{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Date Submitted</th>
+                <th>Star Rating</th>
+                <th>Review Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in f %}
+            <tr>
+                <td>{{ i.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <span style="font-size: 1.1rem; color: hsl(45, 95%, 48%); letter-spacing: 2px;">
+                        {% if i.rating == 5 %}★★★★★
+                        {% elif i.rating == 4 %}★★★★☆
+                        {% elif i.rating == 3 %}★★★☆☆
+                        {% elif i.rating == 2 %}★★☆☆☆
+                        {% else %}★☆☆☆☆
+                        {% endif %}
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary-light); margin-left: 0.5rem;">({{ i.rating }}/5)</span>
+                </td>
+                <td>"{{ i.message }}"</td>
+            </tr>
+            {% empty %}
+            <!-- Check if context passes 'val' instead of 'f', as views.py shows:
+                 return render(request, "USER/view_feedback.html", {"val": f})
+                 Ah! Let's write the loop to look in BOTH 'val' and 'f' by checking val first!
+            -->
+            {% for i in val %}
+            <tr>
+                <td>{{ i.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <span style="font-size: 1.1rem; color: hsl(45, 95%, 48%); letter-spacing: 2px;">
+                        {% if i.rating == 5 %}★★★★★
+                        {% elif i.rating == 4 %}★★★★☆
+                        {% elif i.rating == 3 %}★★★☆☆
+                        {% elif i.rating == 2 %}★★☆☆☆
+                        {% else %}★☆☆☆☆
+                        {% endif %}
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary-light); margin-left: 0.5rem;">({{ i.rating }}/5)</span>
+                </td>
+                <td>"{{ i.message }}"</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center; color: var(--text-secondary-light); padding: 3rem;">
+                    <i class="fa-solid fa-face-smile" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+                    You have not submitted any feedback reviews yet.
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
