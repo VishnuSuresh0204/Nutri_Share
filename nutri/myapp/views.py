@@ -347,6 +347,118 @@ def volunteer_reject_task(request):
 
     return redirect("/volunteer_view_tasks")
 
+def volunteer_update_status(request):
+
+    id = request.GET.get("id")
+    st = request.GET.get("status")
+
+    a = VolunteerAssignment.objects.get(id=id)
+
+    a.pickup_status = st
+    a.save()
+
+    return redirect("/volunteer_view_tasks")
+
+
+
 def user_home(request):
     return render(request, "USER/user_home.html")
+
+
+def user_view_donations(request):
+
+    d = FoodDonation.objects.filter(
+        status="available"
+    )
+
+    return render(request,
+                  "USER/view_donations.html",
+                  {"val": d})
+
+def user_request_food(request):
+
+    did = request.GET.get("did")
+
+    user = UserProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    donation = FoodDonation.objects.get(id=did)
+
+    FoodRequest.objects.create(
+        user=user,
+        donation=donation
+    )
+
+    messages.success(request, "Request Sent")
+
+    return redirect("/user_view_requests")
+
+def user_request_food(request):
+
+    did = request.GET.get("did")
+
+    user = UserProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    donation = FoodDonation.objects.get(id=did)
+
+    FoodRequest.objects.create(
+        user=user,
+        donation=donation
+    )
+
+    messages.success(request, "Request Sent")
+
+    return redirect("/user_view_requests")
+
+def user_add_feedback(request):
+
+    user = UserProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    if request.method == "POST":
+
+        Feedback.objects.create(
+            user=user,
+            rating=request.POST.get("rating"),
+            message=request.POST.get("message")
+        )
+
+        return redirect("/user_view_feedback")
+
+    return render(request, "USER/add_feedback.html")
+
+def user_view_feedback(request):
+
+    user = UserProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    f = Feedback.objects.filter(user=user)
+
+    return render(request,
+                  "USER/view_feedback.html",
+                  {"val": f})
+
+def user_add_complaint(request):
+
+    user = UserProfile.objects.get(
+        loginid_id=request.session["lid"]
+    )
+
+    if request.method == "POST":
+
+        Complaint.objects.create(
+            user=user,
+            subject=request.POST.get("subject"),
+            message=request.POST.get("message")
+        )
+
+        return redirect("/user_view_complaints")
+
+    return render(request, "USER/add_complaint.html")
+
 
