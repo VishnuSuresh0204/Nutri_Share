@@ -1,0 +1,48 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}User Dashboard - Home{% endblock %}
+{% block header_title %}Overview Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Food Listings Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-utensils" style="color: var(--primary-color);"></i></div>
+        <div class="stat-details">
+            <h3>Browse</h3>
+            <p>Food Listings</p>
+        </div>
+        <a href="/user_view_donations" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Active Requests Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-clipboard-list" style="color: hsl(210, 80%, 45%);"></i></div>
+        <div class="stat-details">
+            <h3>My Requests</h3>
+            <p>Track status</p>
+        </div>
+        <a href="/user_view_requests" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Feedback Stat Card -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-star" style="color: hsl(45, 95%, 48%);"></i></div>
+        <div class="stat-details">
+            <h3>Reviews</h3>
+            <p>Submit rating</p>
+        </div>
+        <a href="/user_add_feedback" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+</div>
+
+<div style="background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm); margin-top: 2rem;">
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--text-primary-light);">Welcome to NutriShare</h3>
+    <p style="color: var(--text-secondary-light); line-height: 1.6; margin-bottom: 1.5rem;">Use this dashboard to browse surplus food listed by local donors, request items, and track deliveries. If you have any complaints or comments, feel free to use the feedback forms to reach the administration.</p>
+    
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="/user_view_donations" class="btn btn-primary"><i class="fa-solid fa-utensils"></i> Browse Food Packages</a>
+        <a href="/user_add_complaint" class="btn btn-secondary"><i class="fa-solid fa-circle-exclamation"></i> Submit a Complaint</a>
+    </div>
+</div>
+{% endblock %}
