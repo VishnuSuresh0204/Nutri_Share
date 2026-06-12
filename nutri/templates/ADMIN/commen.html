@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard - NutriShare{% endblock %}</title>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Local Premium Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="/admin_home" class="logo-container" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fa-solid fa-hand-holding-heart logo-icon" style="color: hsl(142, 60%, 55%);"></i>
+                <span class="logo-text">NutriShare</span>
+            </a>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="/admin_home" class="sidebar-link {% if '/admin_home/' in request.path or '/admin_home' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_donors" class="sidebar-link {% if '/admin_view_donors' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-hotel"></i> Donors
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_volunteers" class="sidebar-link {% if '/admin_view_volunteers' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-truck-ramp-box"></i> Volunteers
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_users" class="sidebar-link {% if '/admin_view_users' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-user-group"></i> Beneficiaries
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_donations" class="sidebar-link {% if '/admin_view_donations' in request.path or '/admin_donor_action' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-utensils"></i> Donations
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_distribution_records" class="sidebar-link {% if '/admin_distribution_records' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-clipboard-list"></i> Distributions
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_feedback" class="sidebar-link {% if '/admin_view_feedback' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-star"></i> Feedback
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_complaints" class="sidebar-link {% if '/admin_view_complaints' in request.path or '/admin_reply_complaint' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-circle-exclamation"></i> Complaints
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_send_notification" class="sidebar-link {% if '/admin_send_notification' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-paper-plane"></i> Send Alert
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin_view_notifications" class="sidebar-link {% if '/admin_view_notifications' in request.path %}active{% endif %}">
+                        <i class="fa-solid fa-bell"></i> Notifications
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <a href="/logout" class="sidebar-link logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard View -->
+        <main class="dashboard-main">
+            <!-- Header bar -->
+            <header class="dashboard-header">
+                <div>
+                    <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary-light);">{% block header_title %}Admin Control Panel{% endblock %}</h2>
+                </div>
+                
+                <div class="user-profile-widget">
+                    <div style="background-color: var(--primary-color); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">
+                        A
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name">System Admin</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Inner Page Content -->
+            <div class="dashboard-content">
+                <!-- Django Messages framework -->
+                {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                        <span><i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}" style="margin-right: 0.5rem;"></i> {{ message }}</span>
+                        <span class="alert-close" onclick="this.parentElement.style.display='none'">&times;</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
