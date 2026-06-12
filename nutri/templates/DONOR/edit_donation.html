@@ -1,0 +1,60 @@
+{% extends "DONOR/commen.html" %}
+
+{% block title %}Edit Donation - Donor Portal{% endblock %}
+{% block header_title %}Edit Food Listing{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h3 class="form-title">Edit Listing Details</h3>
+    <p class="form-subtitle">Modify the details of your active food donation.</p>
+    
+    <form action="/donor_edit_donation/?id={{ donation.id }}" method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="food_name">Food Item / Title</label>
+            <input type="text" id="food_name" name="food_name" class="form-control" value="{{ donation.food_name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="food_type">Food Category / Type</label>
+            <select id="food_type" name="food_type" class="form-control" required>
+                <option value="Veg Meal" {% if donation.food_type == 'Veg Meal' %}selected{% endif %}>Veg Meal</option>
+                <option value="Non-Veg Meal" {% if donation.food_type == 'Non-Veg Meal' %}selected{% endif %}>Non-Veg Meal</option>
+                <option value="Bakery / Dessert" {% if donation.food_type == 'Bakery / Dessert' %}selected{% endif %}>Bakery / Dessert</option>
+                <option value="Fruits / Vegetables" {% if donation.food_type == 'Fruits / Vegetables' %}selected{% endif %}>Fruits / Vegetables</option>
+                <option value="Groceries / Shelf-stable" {% if donation.food_type == 'Groceries / Shelf-stable' %}selected{% endif %}>Groceries / Shelf-stable</option>
+                <option value="Other" {% if donation.food_type == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="quantity">Quantity / Servings</label>
+            <input type="text" id="quantity" name="quantity" class="form-control" value="{{ donation.quantity }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="expiry_time">Best Before / Expiry Time</label>
+            <!-- Note: Django templates format datetime for input value as ISO format without seconds using date filter -->
+            <input type="datetime-local" id="expiry_time" name="expiry_time" class="form-control" value="{{ donation.expiry_time|date:'Y-m-d\TH:i' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="pickup_address">Pickup Address</label>
+            <textarea id="pickup_address" name="pickup_address" class="form-control" required>{{ donation.pickup_address }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Detailed Description</label>
+            <textarea id="description" name="description" class="form-control" required>{{ donation.description }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">
+                <i class="fa-solid fa-floppy-disk"></i> Save Changes
+            </button>
+            <a href="/donor_view_donations" class="btn btn-secondary" style="text-align: center;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
