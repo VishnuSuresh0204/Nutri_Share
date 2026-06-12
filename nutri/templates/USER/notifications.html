@@ -1,0 +1,34 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}Announcements - User Portal{% endblock %}
+{% block header_title %}Announcements & System Updates{% endblock %}
+
+{% block content %}
+<div class="notification-list">
+    {% for i in val %}
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-bullhorn" style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ i.title }}</span>
+            <span class="notification-date">{{ i.created_at }}</span>
+        </div>
+        <p class="notification-message">{{ i.message }}</p>
+    </div>
+    {% empty %}
+    <!-- Mock notifications for visual display review -->
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-circle-check" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Safe Food Handling Guidelines</span>
+            <span class="notification-date">June 12, 2026</span>
+        </div>
+        <p class="notification-message">To ensure highest standard of food safety, please consume all collected hot meals within 2 hours of delivery or refrigerate them immediately. Check for freshness and discard food if you notice off odors or damaged containers.</p>
+    </div>
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-circle-exclamation" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Service Area Expansion</span>
+            <span class="notification-date">June 10, 2026</span>
+        </div>
+        <p class="notification-message">We have partnered with new donor food businesses and supermarkets in the North District. Expect more listings for bread, fresh produce, and family dinner packages starting next week.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
