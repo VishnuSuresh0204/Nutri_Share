@@ -1,0 +1,40 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}Update Task Status - Volunteer Portal{% endblock %}
+{% block header_title %}Update Collection / Delivery Status{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h3 class="form-title">Update Dispatch Progress</h3>
+    <p class="form-subtitle">Confirm the physical pickup or drop-off of the food packages.</p>
+    
+    <div style="background-color: var(--bg-light); border: 1px solid var(--border-color-light); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+        <strong>Task details:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1.5rem; font-size: 0.95rem; color: var(--text-secondary-light);">
+            <li>Food Item: {{ task.donation.food_name|default:"Mixed Bakery Pastries" }}</li>
+            <li>Donor: {{ task.donation.donor.organization_name|default:"Delicious Bakery" }}</li>
+            <li>Current Pickup Status: <span class="badge badge-assigned">{{ task.pickup_status|default:"pending" }}</span></li>
+        </ul>
+    </div>
+
+    <form action="/volunteer_update_status/" method="GET">
+        <input type="hidden" name="id" value="{{ task.id|default:'1' }}">
+        
+        <div class="form-group">
+            <label for="status">Change Status To</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="" disabled selected>Choose status...</option>
+                <option value="collected" {% if task.pickup_status == 'collected' %}selected{% endif %}>Collected (Items picked up from donor)</option>
+                <option value="delivered" {% if task.pickup_status == 'delivered' %}selected{% endif %}>Delivered (Items handed over to beneficiary)</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">
+                <i class="fa-solid fa-square-check"></i> Submit Update
+            </button>
+            <a href="/volunteer_view_tasks" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
