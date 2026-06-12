@@ -1,0 +1,46 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}View Feedback - Admin{% endblock %}
+{% block header_title %}User Feedback & Reviews{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Rating</th>
+                <th>Message</th>
+                <th>Submitted On</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td><strong>{{ i.user.name }}</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary-light);">{{ i.user.email }}</span></td>
+                <td>
+                    <span style="font-size: 1.1rem; color: hsl(45, 95%, 48%); letter-spacing: 2px;">
+                        {% if i.rating == 5 %}★★★★★
+                        {% elif i.rating == 4 %}★★★★☆
+                        {% elif i.rating == 3 %}★★★☆☆
+                        {% elif i.rating == 2 %}★★☆☆☆
+                        {% else %}★☆☆☆☆
+                        {% endif %}
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary-light); margin-left: 0.5rem;">({{ i.rating }}/5)</span>
+                </td>
+                <td style="max-width: 400px;">"{{ i.message }}"</td>
+                <td style="font-size: 0.85rem; color: var(--text-secondary-light);">{{ i.created_at }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary-light); padding: 3rem;">
+                    <i class="fa-solid fa-face-smile" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+                    No feedback records available.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
