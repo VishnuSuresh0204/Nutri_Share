@@ -49,8 +49,15 @@ urlpatterns = [
     path('volunteer_view_tasks/', views.volunteer_view_tasks),
     path('volunteer_accept_task/', views.volunteer_accept_task),
     path('volunteer_reject_task/', views.volunteer_reject_task),
-
+    path('volunteer_update_status/', views.volunteer_update_status),
+    
+    
     path('user_home/', views.user_home),
+    path('user_view_donations/', views.user_view_donations),
+    path('user_request_food/', views.user_request_food),
+    path('user_add_feedback/', views.user_add_feedback),
+    path('user_view_feedback/', views.user_view_feedback),
+    path('user_add_complaint/', views.user_add_complaint),
     
 
 ]
