@@ -1,0 +1,46 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}My Complaint History - NutriShare{% endblock %}
+{% block header_title %}My Registered Complaints{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Date Filed</th>
+                <th>Subject</th>
+                <th>My Complaint Message</th>
+                <th>Status</th>
+                <th>Admin Response / Reply</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>{{ i.created_at|date:"M d, Y" }}</td>
+                <td><strong style="color: var(--text-primary-light);">{{ i.subject }}</strong></td>
+                <td style="max-width: 300px; font-size: 0.9rem;">{{ i.message }}</td>
+                <td>
+                    <span class="badge badge-{{ i.status }}">{{ i.status }}</span>
+                </td>
+                <td style="max-width: 350px; font-size: 0.9rem; color: var(--primary-color);">
+                    {% if i.reply %}
+                    <i class="fa-solid fa-reply"></i> {{ i.reply }}
+                    {% else %}
+                    <span style="color: var(--text-secondary-light); font-style: italic;">Awaiting investigation / response</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-secondary-light); padding: 3rem;">
+                    <i class="fa-solid fa-circle-check" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5; color: var(--primary-color);"></i>
+                    No complaints registered.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
