@@ -1,0 +1,95 @@
+{% extends "DONOR/commen.html" %}
+
+{% block title %}Track Donation - Donor Portal{% endblock %}
+{% block header_title %}Donation Delivery Tracking{% endblock %}
+
+{% block content %}
+<div class="profile-card" style="max-width: 800px; margin: 0 auto;">
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 0.5rem; text-align: center;">Delivery Progress</h3>
+    <p style="text-align: center; color: var(--text-secondary-light); margin-bottom: 2.5rem;">Live status of your food donation</p>
+    
+    <!-- Item Details -->
+    <div style="background-color: var(--bg-light); border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.5rem;">
+        <div><strong>Food Item:</strong> {{ donation.food_name|default:"Mixed Bakery Pastries" }}</div>
+        <div><strong>Current Status:</strong> <span class="badge badge-{{ donation.status|default:'assigned' }}" style="text-transform: uppercase;">{{ donation.status|default:"assigned" }}</span></div>
+        <div><strong>Quantity:</strong> {{ donation.quantity|default:"10 packs" }}</div>
+        <div><strong>Assigned Courier:</strong> {{ assignment.volunteer.name|default:"John Doe (+1 555-0199)" }}</div>
+    </div>
+
+    <!-- Visual Stepper Timeline -->
+    <div style="display: flex; justify-content: space-between; position: relative; margin-bottom: 2rem; padding: 0 1rem;">
+        <!-- Background connector line -->
+        <div style="position: absolute; top: 20px; left: 5%; right: 5%; height: 4px; background-color: var(--border-color-light); z-index: 1;"></div>
+        <!-- Progress highlight (depends on status) -->
+        <div style="position: absolute; top: 20px; left: 5%; 
+            {% if donation.status == 'available' %} width: 0%;
+            {% elif donation.status == 'assigned' %} width: 33%;
+            {% elif donation.status == 'picked_up' or donation.status == 'collected' %} width: 66%;
+            {% else %} width: 90%; {% endif %}
+            height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); z-index: 2; transition: width var(--transition-normal);"></div>
+
+        <!-- Step 1: Available -->
+        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; position: relative; width: 80px; text-align: center;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; 
+                background-color: var(--primary-color); color: white;
+                box-shadow: 0 0 0 6px hsl(142, 60%, 93%);">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <span style="font-size: 0.85rem; font-weight: 600; margin-top: 0.75rem; color: var(--text-primary-light);">Listed</span>
+            <span style="font-size: 0.75rem; color: var(--text-secondary-light);">Food cataloged</span>
+        </div>
+
+        <!-- Step 2: Assigned -->
+        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; position: relative; width: 80px; text-align: center;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; 
+                {% if donation.status != 'available' %}
+                background-color: var(--primary-color); color: white;
+                box-shadow: 0 0 0 6px hsl(142, 60%, 93%);
+                {% else %}
+                background-color: white; color: var(--text-secondary-light); border: 2px solid var(--border-color-light);
+                {% endif %}">
+                <i class="fa-solid fa-user-clock"></i>
+            </div>
+            <span style="font-size: 0.85rem; font-weight: 600; margin-top: 0.75rem; 
+                {% if donation.status != 'available' %} color: var(--text-primary-light); {% else %} color: var(--text-secondary-light); {% endif %}">Assigned</span>
+            <span style="font-size: 0.75rem; color: var(--text-secondary-light);">Courier matched</span>
+        </div>
+
+        <!-- Step 3: Picked Up -->
+        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; position: relative; width: 80px; text-align: center;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; 
+                {% if donation.status == 'picked_up' or donation.status == 'collected' or donation.status == 'delivered' %}
+                background-color: var(--primary-color); color: white;
+                box-shadow: 0 0 0 6px hsl(142, 60%, 93%);
+                {% else %}
+                background-color: white; color: var(--text-secondary-light); border: 2px solid var(--border-color-light);
+                {% endif %}">
+                <i class="fa-solid fa-truck-ramp-box"></i>
+            </div>
+            <span style="font-size: 0.85rem; font-weight: 600; margin-top: 0.75rem; 
+                {% if donation.status == 'picked_up' or donation.status == 'collected' or donation.status == 'delivered' %} color: var(--text-primary-light); {% else %} color: var(--text-secondary-light); {% endif %}">Collected</span>
+            <span style="font-size: 0.75rem; color: var(--text-secondary-light);">En route</span>
+        </div>
+
+        <!-- Step 4: Delivered -->
+        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; position: relative; width: 80px; text-align: center;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; 
+                {% if donation.status == 'delivered' %}
+                background-color: var(--primary-color); color: white;
+                box-shadow: 0 0 0 6px hsl(142, 60%, 93%);
+                {% else %}
+                background-color: white; color: var(--text-secondary-light); border: 2px solid var(--border-color-light);
+                {% endif %}">
+                <i class="fa-solid fa-house-chimney-user"></i>
+            </div>
+            <span style="font-size: 0.85rem; font-weight: 600; margin-top: 0.75rem; 
+                {% if donation.status == 'delivered' %} color: var(--text-primary-light); {% else %} color: var(--text-secondary-light); {% endif %}">Delivered</span>
+            <span style="font-size: 0.75rem; color: var(--text-secondary-light);">Received safely</span>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 3.5rem;">
+        <a href="/donor_view_donations" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back to Listings</a>
+    </div>
+</div>
+{% endblock %}
