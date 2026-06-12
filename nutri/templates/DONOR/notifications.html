@@ -1,0 +1,34 @@
+{% extends "DONOR/commen.html" %}
+
+{% block title %}Announcements - Donor Portal{% endblock %}
+{% block header_title %}Announcements & Updates{% endblock %}
+
+{% block content %}
+<div class="notification-list">
+    {% for i in val %}
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-bullhorn" style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ i.title }}</span>
+            <span class="notification-date">{{ i.created_at }}</span>
+        </div>
+        <p class="notification-message">{{ i.message }}</p>
+    </div>
+    {% empty %}
+    <!-- Mock values for visual display when no live items are present -->
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-bullhorn" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Freshness and Hygiene Packaging Standards</span>
+            <span class="notification-date">June 12, 2026</span>
+        </div>
+        <p class="notification-message">Please ensure all donated hot food meals are packed in food-grade insulated foil container boxes and labelled with packaging date and allergen disclosures. Thank you for maintaining safety guidelines.</p>
+    </div>
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-gift" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Nutrient Share annual partner summit</span>
+            <span class="notification-date">June 10, 2026</span>
+        </div>
+        <p class="notification-message">We invite all donor restaurants and retail delegates to our annual partnership summit on July 10, 2026. Register early to coordinate dietary statistics reports and share insights.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
