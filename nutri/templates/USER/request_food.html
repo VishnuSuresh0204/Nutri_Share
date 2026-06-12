@@ -1,0 +1,36 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}Confirm Request - NutriShare{% endblock %}
+{% block header_title %}Confirm Food Request{% endblock %}
+
+{% block content %}
+<div class="form-card" style="max-width: 600px;">
+    <h3 class="form-title">Confirm Your Claim</h3>
+    <p class="form-subtitle">Review details of the surplus food package before sending the request</p>
+    
+    <div style="background-color: var(--bg-light); border: 1px solid var(--border-color-light); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+        <h4 style="font-family: 'Outfit', sans-serif; color: var(--primary-color); font-size: 1.25rem; margin-bottom: 0.75rem;">
+            <i class="fa-solid fa-utensils"></i> {{ donation.food_name|default:"Surplus Food Package" }}
+        </h4>
+        
+        <div style="font-size: 0.95rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <div><strong>Donor Business:</strong> {{ donation.donor.organization_name|default:"Donor Organization" }}</div>
+            <div><strong>Quantity Listed:</strong> {{ donation.quantity|default:"10 packs" }}</div>
+            <div><strong>Category:</strong> {{ donation.food_type|default:"Veg Meal" }}</div>
+            <div><strong>Best Before:</strong> <span style="color: hsl(0, 75%, 45%); font-weight: 500;">{{ donation.expiry_time|default:"Today, 8:00 PM" }}</span></div>
+            <div style="border-top: 1px solid var(--border-color-light); margin-top: 0.5rem; padding-top: 0.5rem; color: var(--text-secondary-light);">
+                <strong>Description:</strong> {{ donation.description|default:"No description provided" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Form/Link -->
+    <div style="display: flex; gap: 1rem;">
+        <!-- If the user keeps immediate GET creation, this link triggers it directly -->
+        <a href="/user_request_food?did={{ donation.id|default:'1' }}" class="btn btn-primary" style="flex: 1; text-align: center;">
+            <i class="fa-solid fa-square-check"></i> Send Request Now
+        </a>
+        <a href="/user_view_donations" class="btn btn-secondary">Cancel</a>
+    </div>
+</div>
+{% endblock %}
