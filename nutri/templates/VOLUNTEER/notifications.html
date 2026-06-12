@@ -1,0 +1,34 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}Alerts & Updates - Volunteer Portal{% endblock %}
+{% block header_title %}Alerts & System News{% endblock %}
+
+{% block content %}
+<div class="notification-list">
+    {% for i in val %}
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-bullhorn" style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ i.title }}</span>
+            <span class="notification-date">{{ i.created_at }}</span>
+        </div>
+        <p class="notification-message">{{ i.message }}</p>
+    </div>
+    {% empty %}
+    <!-- Mock values for dashboard design review -->
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-truck-fast" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Hot Weather Dispatch Guidelines</span>
+            <span class="notification-date">June 12, 2026</span>
+        </div>
+        <p class="notification-message">Due to high summer temperatures, please prioritize food collections with short expiry windows and use thermal insulation courier bags. Do not leave food in vehicles parked under direct sunlight.</p>
+    </div>
+    <div class="notification-item">
+        <div class="notification-meta">
+            <span class="notification-title"><i class="fa-solid fa-shield-heart" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Safety First: Identification Badges</span>
+            <span class="notification-date">June 08, 2026</span>
+        </div>
+        <p class="notification-message">Always carry your digital NutriShare identity screen or printed volunteer badge when picking up food from donor stores. If you need a replacement card, submit a request to admin.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
