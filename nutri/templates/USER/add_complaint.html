@@ -1,0 +1,29 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}File a Complaint - NutriShare{% endblock %}
+{% block header_title %}File a Complaint{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h3 class="form-title">Submit Complaint</h3>
+    <p class="form-subtitle">Let us know if you encountered issues with food quality, delivery delays, or volunteer behaviors.</p>
+    
+    <form action="/user_add_complaint/" method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="subject">Complaint Subject</label>
+            <input type="text" id="subject" name="subject" class="form-control" placeholder="Brief subject (e.g. Delayed pickup, Bad packaging)" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="message">Detailed Complaint Message</label>
+            <textarea id="message" name="message" class="form-control" style="min-height: 150px;" placeholder="Provide complete details (order details, time, courier actions, etc.) so we can investigate properly..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-danger btn-block" style="margin-top: 1.5rem;">
+            <i class="fa-solid fa-circle-exclamation"></i> Submit Complaint
+        </button>
+    </form>
+</div>
+{% endblock %}
