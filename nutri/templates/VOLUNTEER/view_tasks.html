@@ -1,0 +1,85 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}My Tasks - Volunteer Portal{% endblock %}
+{% block header_title %}Assigned Pickup & Delivery Tasks{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Donation Item</th>
+                <th>Donor Organization</th>
+                <th>Pickup Location</th>
+                <th>Acceptance Status</th>
+                <th>Collection Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>
+                    <strong style="color: var(--text-primary-light);">{{ i.donation.food_name }}</strong><br>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary-light);">Qty: {{ i.donation.quantity }} | Category: {{ i.donation.food_type }}</span>
+                </td>
+                <td>
+                    <strong>{{ i.donation.donor.organization_name }}</strong><br>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary-light);"><i class="fa-solid fa-phone"></i> {{ i.donation.donor.phone }}</span>
+                </td>
+                <td style="max-width: 200px; font-size: 0.85rem; color: var(--text-secondary-light);">
+                    {{ i.donation.pickup_address }}
+                </td>
+                <td>
+                    {% if i.accepted == None %}
+                    <span class="badge badge-pending">Pending Decision</span>
+                    {% elif i.accepted == True %}
+                    <span class="badge badge-approved"><i class="fa-solid fa-circle-check"></i> Accepted</span>
+                    {% else %}
+                    <span class="badge badge-rejected"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge badge-{{ i.pickup_status }}">{{ i.pickup_status }}</span>
+                </td>
+                <td>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <a href="/volunteer_task_details?id={{ i.id }}" class="btn btn-secondary btn-sm" title="View details">
+                            <i class="fa-solid fa-circle-info"></i> Details
+                        </a>
+                        
+                        {% if i.accepted == None %}
+                        <a href="/volunteer_accept_task?id={{ i.id }}" class="btn btn-success btn-sm">
+                            <i class="fa-solid fa-check"></i> Accept
+                        </a>
+                        <a href="/volunteer_reject_task?id={{ i.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Reject this assignment?');">
+                            <i class="fa-solid fa-xmark"></i> Reject
+                        </a>
+                        {% elif i.accepted == True %}
+                            {% if i.pickup_status == 'pending' %}
+                            <a href="/volunteer_update_status?id={{ i.id }}&status=collected" class="btn btn-primary btn-sm">
+                                <i class="fa-solid fa-truck-ramp-box"></i> Mark Collected
+                            </a>
+                            {% elif i.pickup_status == 'collected' %}
+                            <a href="/volunteer_update_status?id={{ i.id }}&status=delivered" class="btn btn-success btn-sm">
+                                <i class="fa-solid fa-house-chimney-user"></i> Mark Delivered
+                            </a>
+                            {% else %}
+                            <span style="color: var(--text-secondary-light); font-size: 0.85rem;">Task Completed</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-secondary-light); padding: 4rem;">
+                    <i class="fa-solid fa-truck-ramp-box" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.4;"></i>
+                    No active tasks assigned to you.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
