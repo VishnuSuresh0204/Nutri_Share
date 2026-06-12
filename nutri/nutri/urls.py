@@ -58,6 +58,6 @@ urlpatterns = [
     path('user_add_feedback/', views.user_add_feedback),
     path('user_view_feedback/', views.user_view_feedback),
     path('user_add_complaint/', views.user_add_complaint),
-    
+    path('user_view_complaints/', views.user_view_complaints)
 
 ]
