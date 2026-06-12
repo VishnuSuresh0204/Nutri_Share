@@ -1,0 +1,48 @@
+{% extends "DONOR/commen.html" %}
+
+{% block title %}Donor Dashboard - Home{% endblock %}
+{% block header_title %}Donor Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Stat Card: Total Donations -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-utensils"></i></div>
+        <div class="stat-details">
+            <h3>Active</h3>
+            <p>Donation Listings</p>
+        </div>
+        <a href="/donor_view_donations" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Stat Card: Completed Deliveries -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-clipboard-check" style="color: hsl(142, 60%, 45%);"></i></div>
+        <div class="stat-details">
+            <h3>Completed</h3>
+            <p>Redistributions</p>
+        </div>
+        <a href="/donor_donation_history" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+
+    <!-- Stat Card: Live Tracking -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-route" style="color: hsl(210, 80%, 45%);"></i></div>
+        <div class="stat-details">
+            <h3>Track</h3>
+            <p>Active Couriers</p>
+        </div>
+        <a href="/donor_track_donation" style="position: absolute; inset: 0; z-index: 5;"></a>
+    </div>
+</div>
+
+<div style="background-color: white; border: 1px solid var(--border-color-light); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm); margin-top: 2rem; display: flex; align-items: center; gap: 2rem; justify-content: space-between; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 300px;">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary-light);">Share Surplus Food Today</h3>
+        <p style="color: var(--text-secondary-light); line-height: 1.6;">Create a new listing for any surplus, fresh edible items from your kitchen, store, or bakery. Volunteers will be alerted to collect and deliver them safely.</p>
+    </div>
+    <div>
+        <a href="/donor_add_donation" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> Add New Donation</a>
+    </div>
+</div>
+{% endblock %}
