@@ -1,0 +1,83 @@
+{% extends "USER/commen.html" %}
+
+{% block title %}My Profile - User Portal{% endblock %}
+{% block header_title %}My Profile Details{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<style>
+    .profile-card { padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .info-label { font-size: 0.85rem; color: var(--text-secondary-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem; display: block; }
+    .info-value { font-size: 1.1rem; font-weight: 500; color: var(--text-primary-light); margin-bottom: 1.5rem; }
+    #map { height: 250px; width: 100%; border-radius: 8px; border: 1px solid var(--border-color-light); margin-top: 0.5rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-card" style="max-width: 800px; margin: 0 auto;">
+    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 0.5rem; text-align: center;">Account Information</h3>
+    <p style="text-align: center; color: var(--text-secondary-light); margin-bottom: 2rem;">Your profile is managed by the administrator. You cannot edit these details directly.</p>
+    
+    <div style="display: flex; justify-content: center; margin-bottom: 2.5rem;">
+        <div style="position: relative; text-align: center;">
+            {% if profile.profile_pic %}
+            <img src="{{ profile.profile_pic.url }}" alt="Profile Pic" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color);">
+            {% else %}
+            <div style="width: 120px; height: 120px; border-radius: 50%; background-color: hsl(280, 20%, 90%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--text-secondary-light); border: 4px solid var(--primary-color);">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="profile-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="grid-column: 1 / -1;">
+            <span class="info-label">Full Name / Organization Name</span>
+            <div class="info-value">{{ profile.name }}</div>
+        </div>
+        
+        <div>
+            <span class="info-label">Email Address</span>
+            <div class="info-value">{{ profile.email }}</div>
+        </div>
+        
+        <div>
+            <span class="info-label">Phone Number</span>
+            <div class="info-value">{{ profile.phone }}</div>
+        </div>
+        
+        <div style="grid-column: 1 / -1;">
+            <span class="info-label">Delivery Address / Location Details</span>
+            <div class="info-value">{{ profile.address }}</div>
+        </div>
+
+        {% if profile.latitude and profile.longitude %}
+        <div style="grid-column: 1 / -1;">
+            <span class="info-label">Pinned Location</span>
+            <div id="map"></div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem; border-top: 1px solid var(--border-color-light); padding-top: 2rem;">
+        <a href="/user_home" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if profile.latitude and profile.longitude %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var lat = {{ profile.latitude|stringformat:"f" }};
+        var lon = {{ profile.longitude|stringformat:"f" }};
+        var map = L.map('map').setView([lat, lon], 14); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+        L.marker([lat, lon]).addTo(map).bindPopup("Your Location");
+    });
+</script>
+{% endif %}
+{% endblock %}
