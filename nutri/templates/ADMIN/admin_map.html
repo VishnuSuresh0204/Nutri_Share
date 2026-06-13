@@ -1,0 +1,75 @@
+{% extends "ADMIN/commen.html" %}
+
+{% block title %}System Map - Admin Portal{% endblock %}
+{% block header_title %}System Map Overview{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<style>
+    .map-container { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    #admin-map { height: 600px; width: 100%; border-radius: 8px; border: 1px solid var(--border-color-light); }
+    .map-legend { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+    .legend-color { width: 15px; height: 15px; border-radius: 50%; display: inline-block; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="map-container">
+    <h3 style="margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">Participant Locations</h3>
+    <div id="admin-map"></div>
+    <div class="map-legend">
+        <div class="legend-item"><span class="legend-color" style="background-color: blue;"></span> Beneficiary (User)</div>
+        <div class="legend-item"><span class="legend-color" style="background-color: green;"></span> Donor Organization</div>
+        <div class="legend-item"><span class="legend-color" style="background-color: red;"></span> Volunteer</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var map = L.map('admin-map').setView([10.8505, 76.2711], 7); // Default
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        var locations = {{ locations|safe }};
+        
+        // Define custom icons
+        var createIcon = function(color) {
+            return L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color:${color};width:15px;height:15px;border-radius:50%;border:2px solid white;box-shadow:0 0 4px rgba(0,0,0,0.4);"></div>`,
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+        };
+
+        var userIcon = createIcon('blue');
+        var donorIcon = createIcon('green');
+        var volunteerIcon = createIcon('red');
+
+        var bounds = [];
+
+        locations.forEach(function(loc) {
+            if(loc.lat && loc.lon) {
+                var icon = null;
+                if(loc.type === 'User') icon = userIcon;
+                else if(loc.type === 'Donor') icon = donorIcon;
+                else if(loc.type === 'Volunteer') icon = volunteerIcon;
+
+                var marker = L.marker([loc.lat, loc.lon], {icon: icon}).addTo(map);
+                marker.bindPopup(`<b>${loc.name}</b><br>Role: ${loc.type}`);
+                bounds.push([loc.lat, loc.lon]);
+            }
+        });
+
+        if(bounds.length > 0) {
+            map.fitBounds(bounds, {padding: [50, 50]});
+        }
+    });
+</script>
+{% endblock %}
