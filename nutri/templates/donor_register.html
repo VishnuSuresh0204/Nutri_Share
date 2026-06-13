@@ -2,6 +2,15 @@
 
 {% block title %}Register as Donor - NutriShare{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    .map-container { margin-bottom: 1rem; }
+    #map { height: 300px; width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color-light); }
+    .map-help { font-size: 0.85rem; color: var(--text-secondary-light); margin-bottom: 0.5rem; display: block; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="form-card">
     <h2 class="form-title">Donor Registration</h2>
@@ -48,9 +57,18 @@
             <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. +1234567890" required>
         </div>
         
+        <div class="form-group map-container">
+            <label>Pin Pickup Location</label>
+            <span class="map-help">Click on the map to pin the exact pickup location for donations. Your address will be fetched automatically.</span>
+            <div id="map"></div>
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+        </div>
+        
         <div class="form-group">
             <label for="address">Pickup Address</label>
-            <textarea id="address" name="address" class="form-control" placeholder="Provide complete address for volunteer pickup" required></textarea>
+            <textarea id="address" name="address" class="form-control" placeholder="Provide complete address for volunteer pickup" required readonly style="background-color: #f9f9f9;"></textarea>
+            <span class="map-help">Please verify the auto-fetched address.</span>
         </div>
         
         <div class="form-group">
@@ -67,4 +85,55 @@
         Already have an account? <a href="/login" style="font-weight: 600; color: var(--primary-color);">Login here</a>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var map = L.map('map').setView([10.8505, 76.2711], 7); 
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var marker = null;
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                map.setView([lat, lon], 13);
+            });
+        }
+
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lon = e.latlng.lng;
+
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                marker = L.marker(e.latlng).addTo(map);
+            }
+
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lon;
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data && data.display_name) {
+                        document.getElementById('address').value = data.display_name;
+                    } else {
+                        document.getElementById('address').value = "Address not found for this location.";
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('address').value = "Error fetching address.";
+                });
+        });
+    });
+</script>
 {% endblock %}
