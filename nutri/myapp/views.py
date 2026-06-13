@@ -402,24 +402,13 @@ def user_request_food(request):
 
     return redirect("/user_view_requests")
 
-def user_request_food(request):
+def user_view_requests(request):
+    user = UserProfile.objects.get(loginid_id=request.session["lid"])
+    requests = FoodRequest.objects.filter(user=user)
+    return render(request, "USER/view_requests.html", {"val": requests})
 
-    did = request.GET.get("did")
-
-    user = UserProfile.objects.get(
-        loginid_id=request.session["lid"]
-    )
-
-    donation = FoodDonation.objects.get(id=did)
-
-    FoodRequest.objects.create(
-        user=user,
-        donation=donation
-    )
-
-    messages.success(request, "Request Sent")
-
-    return redirect("/user_view_requests")
+def user_notifications(request):
+    return render(request, "USER/notifications.html")
 
 def user_add_feedback(request):
 
@@ -550,4 +539,31 @@ def volunteer_task_map(request):
     assignment = VolunteerAssignment.objects.get(id=assignment_id)
     food_request = FoodRequest.objects.filter(donation=assignment.donation).first()
     return render(request, "VOLUNTEER/task_map.html", {"assignment": assignment, "food_request": food_request})
+
+def donor_track_donation(request):
+    donor = DonorProfile.objects.get(loginid_id=request.session["lid"])
+    donation = FoodDonation.objects.filter(donor=donor).exclude(status="delivered").first()
+    assignment = VolunteerAssignment.objects.filter(donation=donation).first() if donation else None
+    return render(request, "DONOR/track_donation.html", {"donation": donation, "assignment": assignment})
+
+def donor_notifications(request):
+    return render(request, "DONOR/notifications.html")
+
+def volunteer_task_history(request):
+    v = VolunteerProfile.objects.get(loginid_id=request.session["lid"])
+    tasks = VolunteerAssignment.objects.filter(volunteer=v, pickup_status='delivered')
+    return render(request, "VOLUNTEER/task_history.html", {"val": tasks})
+
+def volunteer_notifications(request):
+    return render(request, "VOLUNTEER/notifications.html")
+
+def admin_send_notification(request):
+    return render(request, "ADMIN/send_notification.html")
+
+def admin_view_notifications(request):
+    return render(request, "ADMIN/view_notifications.html")
+
+def admin_distribution_records(request):
+    return render(request, "ADMIN/distribution_records.html", {"val": []})
+
 
