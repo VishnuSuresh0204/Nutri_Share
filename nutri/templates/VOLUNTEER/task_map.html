@@ -1,0 +1,78 @@
+{% extends "VOLUNTEER/commen.html" %}
+
+{% block title %}Task Route Map - Volunteer Portal{% endblock %}
+{% block header_title %}Pickup and Delivery Route{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<style>
+    .map-container { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    #route-map { height: 500px; width: 100%; border-radius: 8px; border: 1px solid var(--border-color-light); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="map-container">
+    <h3 style="margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">Task Locations</h3>
+    <div style="margin-bottom: 1rem;">
+        <p><strong><i class="fa-solid fa-hotel" style="color: green;"></i> Pickup (Donor):</strong> {{ assignment.donation.donor.organization_name }} - {{ assignment.donation.pickup_address }}</p>
+        {% if food_request %}
+        <p><strong><i class="fa-solid fa-house-chimney-user" style="color: blue;"></i> Delivery (User):</strong> {{ food_request.user.name }} - {{ food_request.user.address }}</p>
+        {% else %}
+        <p><strong><i class="fa-solid fa-house-chimney-user" style="color: gray;"></i> Delivery:</strong> To be distributed (No specific user assigned yet).</p>
+        {% endif %}
+    </div>
+    <div id="route-map"></div>
+    <div style="text-align: center; margin-top: 1.5rem;">
+        <a href="/volunteer_view_tasks" class="btn btn-secondary">Back to Tasks</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var map = L.map('route-map').setView([10.8505, 76.2711], 7); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        var bounds = [];
+        var donorLat = "{{ assignment.donation.donor.latitude|default_if_none:'' }}";
+        var donorLon = "{{ assignment.donation.donor.longitude|default_if_none:'' }}";
+        
+        var createIcon = function(color) {
+            return L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color:${color};width:15px;height:15px;border-radius:50%;border:2px solid white;box-shadow:0 0 4px rgba(0,0,0,0.4);"></div>`,
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+        };
+
+        if(donorLat && donorLon) {
+            L.marker([parseFloat(donorLat), parseFloat(donorLon)], {icon: createIcon('green')}).addTo(map).bindPopup("<b>Pickup:</b> {{ assignment.donation.donor.organization_name }}").openPopup();
+            bounds.push([parseFloat(donorLat), parseFloat(donorLon)]);
+        }
+
+        {% if food_request and food_request.user.latitude and food_request.user.longitude %}
+        var userLat = "{{ food_request.user.latitude }}";
+        var userLon = "{{ food_request.user.longitude }}";
+        if(userLat && userLon) {
+            L.marker([parseFloat(userLat), parseFloat(userLon)], {icon: createIcon('blue')}).addTo(map).bindPopup("<b>Delivery:</b> {{ food_request.user.name }}");
+            bounds.push([parseFloat(userLat), parseFloat(userLon)]);
+            
+            if(donorLat && donorLon) {
+                var latlngs = [[parseFloat(donorLat), parseFloat(donorLon)], [parseFloat(userLat), parseFloat(userLon)]];
+                var polyline = L.polyline(latlngs, {color: 'red', dashArray: '5, 10'}).addTo(map);
+            }
+        }
+        {% endif %}
+
+        if(bounds.length > 0) {
+            map.fitBounds(bounds, {padding: [50, 50]});
+        }
+    });
+</script>
+{% endblock %}
