@@ -33,6 +33,8 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -61,6 +63,8 @@ class DonorProfile(models.Model):
         null=True,
         blank=True
     )
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.organization_name
@@ -88,6 +92,8 @@ class VolunteerProfile(models.Model):
         null=True,
         blank=True
     )
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.name
