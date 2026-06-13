@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import json
+import math
 from .models import *
 
 # ---------------- LOGIN CHECK ---------------- #
@@ -88,7 +90,9 @@ def register_user(request):
             email=request.POST.get("email"),
             phone=request.POST.get("phone"),
             address=request.POST.get("address"),
-            profile_pic=request.FILES.get("profile_pic")
+            profile_pic=request.FILES.get("profile_pic"),
+            latitude=request.POST.get("latitude") or None,
+            longitude=request.POST.get("longitude") or None
         )
 
         messages.success(request, "Registration Successful")
@@ -120,7 +124,9 @@ def register_donor(request):
             email=request.POST.get("email"),
             phone=request.POST.get("phone"),
             address=request.POST.get("address"),
-            logo=request.FILES.get("logo")
+            logo=request.FILES.get("logo"),
+            latitude=request.POST.get("latitude") or None,
+            longitude=request.POST.get("longitude") or None
         )
 
         messages.success(request, "Registration submitted. Wait for admin approval.")
@@ -151,7 +157,9 @@ def register_volunteer(request):
             email=request.POST.get("email"),
             phone=request.POST.get("phone"),
             address=request.POST.get("address"),
-            profile_pic=request.FILES.get("profile_pic")
+            profile_pic=request.FILES.get("profile_pic"),
+            latitude=request.POST.get("latitude") or None,
+            longitude=request.POST.get("longitude") or None
         )
 
         messages.success(request, "Registration submitted. Wait for admin approval.")
@@ -473,3 +481,73 @@ def user_view_complaints(request):
     return render(request,
                   "USER/view_complaints.html",
                   {"val": c})
+
+def user_profile(request):
+    user = UserProfile.objects.get(loginid_id=request.session["lid"])
+    return render(request, "USER/my_profile.html", {"profile": user})
+
+def donor_profile(request):
+    donor = DonorProfile.objects.get(loginid_id=request.session["lid"])
+    return render(request, "DONOR/my_profile.html", {"profile": donor})
+
+def volunteer_profile(request):
+    volunteer = VolunteerProfile.objects.get(loginid_id=request.session["lid"])
+    return render(request, "VOLUNTEER/my_profile.html", {"profile": volunteer})
+
+def admin_map(request):
+    users = list(UserProfile.objects.exclude(latitude__isnull=True).exclude(longitude__isnull=True).values('name', 'latitude', 'longitude'))
+    donors = list(DonorProfile.objects.exclude(latitude__isnull=True).exclude(longitude__isnull=True).values('organization_name', 'latitude', 'longitude'))
+    volunteers = list(VolunteerProfile.objects.exclude(latitude__isnull=True).exclude(longitude__isnull=True).values('name', 'latitude', 'longitude'))
+    
+    locations = []
+    for u in users: locations.append({"type": "User", "name": u['name'], "lat": u['latitude'], "lon": u['longitude']})
+    for d in donors: locations.append({"type": "Donor", "name": d['organization_name'], "lat": d['latitude'], "lon": d['longitude']})
+    for v in volunteers: locations.append({"type": "Volunteer", "name": v['name'], "lat": v['latitude'], "lon": v['longitude']})
+    
+    return render(request, "ADMIN/admin_map.html", {"locations": json.dumps(locations)})
+
+def haversine(lat1, lon1, lat2, lon2):
+    if lat1 is None or lon1 is None or lat2 is None or lon2 is None: return float('inf')
+    R = 6371
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
+
+def admin_view_donations(request):
+    donations = FoodDonation.objects.all()
+    return render(request, "ADMIN/view_donations.html", {"val": donations})
+
+def admin_assign_volunteer(request):
+    donation_id = request.GET.get('id')
+    donation = FoodDonation.objects.get(id=donation_id)
+    
+    volunteers = list(VolunteerProfile.objects.filter(status="approved", availability=True))
+    
+    # Sort volunteers by distance to donor
+    d_lat = donation.donor.latitude
+    d_lon = donation.donor.longitude
+    
+    for v in volunteers:
+        v.distance = haversine(d_lat, d_lon, v.latitude, v.longitude)
+        
+    volunteers.sort(key=lambda x: x.distance)
+    
+    if request.method == "POST":
+        vid = request.POST.get('volunteer')
+        vol = VolunteerProfile.objects.get(id=vid)
+        VolunteerAssignment.objects.create(donation=donation, volunteer=vol)
+        donation.status = "assigned"
+        donation.save()
+        messages.success(request, "Volunteer Assigned successfully.")
+        return redirect('/admin_view_donations')
+        
+    return render(request, "ADMIN/assign_volunteer.html", {"donation": donation, "volunteers": volunteers})
+
+def volunteer_task_map(request):
+    assignment_id = request.GET.get('id')
+    assignment = VolunteerAssignment.objects.get(id=assignment_id)
+    food_request = FoodRequest.objects.filter(donation=assignment.donation).first()
+    return render(request, "VOLUNTEER/task_map.html", {"assignment": assignment, "food_request": food_request})
+
