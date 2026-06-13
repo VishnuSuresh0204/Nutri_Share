@@ -4,6 +4,13 @@
 {% block header_title %}Assign Volunteer for Pickup{% endblock %}
 
 {% block content %}
+{% if donation.donor.latitude and donation.donor.longitude %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<style>
+    #donor-map { height: 200px; width: 100%; border-radius: 8px; border: 1px solid var(--border-color-light); margin-top: 1rem; }
+</style>
+{% endif %}
+
 <div class="form-card">
     <h3 class="form-title">Assign Dispatch Volunteer</h3>
     <p class="form-subtitle">Link a food package to a verified courier for collection and delivery.</p>
@@ -17,6 +24,9 @@
             <div><strong>Quantity:</strong> {{ donation.quantity|default:"15 pieces" }}</div>
             <div><strong>Address:</strong> {{ donation.pickup_address|default:"123 Baker St" }}</div>
         </div>
+        {% if donation.donor.latitude and donation.donor.longitude %}
+        <div id="donor-map"></div>
+        {% endif %}
     </div>
 
     <form action="/admin_assign_volunteer/?did={{ donation.id|default:'1' }}" method="POST">
@@ -27,12 +37,9 @@
             <select id="volunteer" name="volunteer" class="form-control" required>
                 <option value="" disabled selected>Choose a courier...</option>
                 {% for v in volunteers %}
-                <option value="{{ v.id }}">{{ v.name }} ({{ v.phone }})</option>
+                <option value="{{ v.id }}">{{ v.name }} ({{ v.phone }}) - {{ v.distance|floatformat:1 }} km away</option>
                 {% empty %}
-                <!-- Mocks for presentation review -->
-                <option value="1">John Doe (+1 555-0199) - Available</option>
-                <option value="2">Jane Smith (+1 555-0142) - Available</option>
-                <option value="3">Alex Jones (+1 555-0185) - Available</option>
+                <option value="" disabled>No volunteers available</option>
                 {% endfor %}
             </select>
         </div>
@@ -47,4 +54,21 @@
         </button>
     </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{% if donation.donor.latitude and donation.donor.longitude %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var lat = {{ donation.donor.latitude|stringformat:"f" }};
+        var lon = {{ donation.donor.longitude|stringformat:"f" }};
+        var map = L.map('donor-map').setView([lat, lon], 14); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+        L.marker([lat, lon]).addTo(map).bindPopup("Donor Pickup Location");
+    });
+</script>
+{% endif %}
 {% endblock %}
