@@ -1,60 +1,48 @@
 # NutriShare
 
-NutriShare is a Django-based food donation and distribution platform designed to connect donors, volunteers, and beneficiaries.
+NutriShare is a platform that connects food donors, volunteers, and beneficiaries (users) to facilitate food donation and distribution, minimizing food waste and helping those in need.
 
-## Features
+## User Roles & Functions
 
-- Custom user types: Admin, Donor, Volunteer, and User (beneficiary)
-- Donor registration and food donation management
-- Volunteer registration, assignment, and task tracking
-- Beneficiary food requests and request tracking
-- Admin dashboards for managing users, donors, volunteers, donations, and notifications
-- Feedback and complaint submission
-- Notification support across user roles
+### 1. Admin
+**Functions:**
+* Manage users, donors, and volunteers
+* Approve or reject donor registrations
+* Monitor food donation activities
+* Assign volunteers for food collection
+* View reports and analytics
+* Manage complaints and feedback
+* Send notifications and announcements
+* Track food distribution records
 
-## Project Structure
+### 2. Donor
+**Functions:**
+* Register and log in to the system
+* Add food donation details
+* Update or cancel donations
+* View donation history
+* Track donation status
+* Receive pickup notifications
+* Communicate with volunteers
 
-- `nutri/` - Django project folder
-- `nutri/myapp/` - main Django app with models, views, and app logic
-- `nutri/templates/` - HTML templates for all pages and user roles
-- `nutri/static/` - static assets such as CSS
+### 3. Volunteer
+**Functions:**
+* Register and log in to the system
+* View assigned food collection tasks
+* Accept or reject assignments
+* Collect food from donors
+* Deliver food to beneficiaries
+* Update pickup and delivery status
+* View task history
+* Receive notifications
 
-## Setup
-
-1. Create and activate a virtual environment
-
-```bash
-python -m venv env
-env\Scripts\activate
-```
-
-2. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Apply migrations
-
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-4. Run the development server
-
-```bash
-python manage.py runserver
-```
-
-5. Open the application in the browser at `http://127.0.0.1:8000/`
-
-## Notes
-
-- The project uses a custom `Login` model that extends Django's `AbstractUser`.
-- Donor, volunteer, and user registration pages are available in templates.
-- Admin routes and templates include management pages for donations, users, volunteers, feedback, complaints, and notifications.
-
-## Commit history
-
-This repository has been updated with focused commits for each page and feature, including separate commits for templates and routes.
+### 4. User (Beneficiary)
+**Functions:**
+* Register and log in to the system
+* View available food donations
+* Request food assistance
+* Track request status
+* Receive food distribution updates
+* View request history
+* Update profile information
+* Provide feedback and ratings
