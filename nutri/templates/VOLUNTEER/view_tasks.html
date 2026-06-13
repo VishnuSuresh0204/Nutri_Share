@@ -56,6 +56,9 @@
                             <i class="fa-solid fa-xmark"></i> Reject
                         </a>
                         {% elif i.accepted == True %}
+                            <a href="/volunteer_task_map?id={{ i.id }}" class="btn btn-secondary btn-sm" title="View Route Map">
+                                <i class="fa-solid fa-map"></i> View Map
+                            </a>
                             {% if i.pickup_status == 'pending' %}
                             <a href="/volunteer_update_status?id={{ i.id }}&status=collected" class="btn btn-primary btn-sm">
                                 <i class="fa-solid fa-truck-ramp-box"></i> Mark Collected
