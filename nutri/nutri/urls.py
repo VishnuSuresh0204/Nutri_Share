@@ -27,8 +27,6 @@ urlpatterns = [
     path('register_user/', views.register_user),
     path('register_donor/', views.register_donor),
     path('register_volunteer/', views.register_volunteer),
-    path('register_donor/', views.register_donor),
-    path('register_volunteer/', views.register_volunteer),
     path('admin_home/', views.admin_home),
     path('admin_view_donors/', views.admin_view_donors),
     path('admin_donor_action/', views.admin_donor_action),
@@ -66,5 +64,20 @@ urlpatterns = [
     path('admin_assign_volunteer/', views.admin_assign_volunteer),
     path('admin_view_donations/', views.admin_view_donations),
     path('volunteer_task_map/', views.volunteer_task_map),
+    path('user_view_requests/', views.user_view_requests),
+    path('user_notifications/', views.user_notifications),
+    path('donor_track_donation/', views.donor_track_donation),
+    path('donor_notifications/', views.donor_notifications),
+    path('volunteer_task_history/', views.volunteer_task_history),
+    path('volunteer_notifications/', views.volunteer_notifications),
+    path('admin_send_notification/', views.admin_send_notification),
+    path('admin_view_notifications/', views.admin_view_notifications),
+    path('admin_distribution_records/', views.admin_distribution_records),
 
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
